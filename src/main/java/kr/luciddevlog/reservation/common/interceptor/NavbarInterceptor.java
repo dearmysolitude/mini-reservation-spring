@@ -26,15 +26,15 @@ public class NavbarInterceptor implements HandlerInterceptor {
         // NavItems 생성 로직
         return Arrays.asList(
                 new NavItem("리조트 소개", Arrays.asList(
-                        new SubItem("조아리조트", "/"), // Controller 로 연결
-                        new SubItem("일반룸", "/static/a_01")
+                        new SubItem("조아리조트", "/reservation/"), // Controller 로 연결
+                        new SubItem("일반룸", "")
                 )),
                 new NavItem("찾아오기", List.of(
-                        new SubItem("찾아오는 길", "/static/b_01")
+                        new SubItem("찾아오는 길", "")
                 )),
                 new NavItem("주변 여행지", List.of(
-                        new SubItem("높아산", "/static/c_01"),
-                        new SubItem("조아해수욕장", "/static/c_02")
+                        new SubItem("높아산", ""),
+                        new SubItem("조아해수욕장", "")
                 ))
         );
     }
