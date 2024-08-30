@@ -3,10 +3,10 @@ package kr.luciddevlog.reservation.member.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
+@Table(name="UserItem")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -14,26 +14,26 @@ import java.util.Date;
 public class UserItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(length = 30)
+    @Column(name = "id", length = 30)
     private Long id;
 
-    @Column(length = 30)
+    @Column(name = "username", length = 30)
     private String username;
 
-    @Column(length = 30)
+    @Column(name = "password", length = 30)
     private String password;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    @Column
-    private LocalDateTime createdAt;
+    @Temporal(TemporalType.DATE)
+    private LocalDate createdAt;
 
-    @Column
+    @Column(name="role")
     private String role;
 
-    @PrePersist //  JPA 엔티티가 데이터베이스에 처음 저장되기 직전에 자동으로 호출
-    protected void onCreate() { // 생성시 시간을 생성하도록 설정
-        createdAt = LocalDateTime.now();
-    }
+//    @PrePersist //  JPA 엔티티가 데이터베이스에 처음 저장되기 직전에 자동으로 호출
+//    protected void onCreate() { // 생성시 시간을 생성하도록 설정
+//        createdAt = LocalDate.now();
+//    }
 }
