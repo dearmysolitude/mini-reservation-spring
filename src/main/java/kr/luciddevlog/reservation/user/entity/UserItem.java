@@ -1,4 +1,4 @@
-package kr.luciddevlog.reservation.member.entity;
+package kr.luciddevlog.reservation.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,4 +36,8 @@ public class UserItem {
 //    protected void onCreate() { // 생성시 시간을 생성하도록 설정
 //        createdAt = LocalDate.now();
 //    }
+    public boolean isAdmin() {
+        return this.role.equals("ROLE_ADMIN");
+    }
+
 }

@@ -36,6 +36,16 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation "org.springframework.boot:spring-boot-starter-security"
+	// PasswordEncoder
+	implementation 'org.springframework.security:spring-security-crypto'
+
+	// QueryDSL https://tecoble.techcourse.co.kr/post/2021-08-08-basic-querydsl/
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
 }
 
 tasks.named('test') {
