@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GenericController<D,P,S> {
+    // D: DTO, P: primary key, S: service
     S service;
     @RequestMapping(method= RequestMethod.POST)
     public int add(D dto) {

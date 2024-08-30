@@ -1,0 +1,23 @@
+{{>layout/header}}
+<div class="main-container">
+    <div class="content-wrapper">
+        <h1 class="welcome-text">리조트 위치</h1>
+        <p class="tagline">우리 리조트의 아름다운 위치를 확인하세요</p>
+
+        <div id="map-container" style="width: 100%; height: 400px; margin-top: 20px;">
+            <gmp-map center="37.3860521,127.1214038" zoom="14" map-id="DEMO_MAP_ID">
+                <gmp-advanced-marker position="37.3860521,127.1214038" title="리조트 위치"></gmp-advanced-marker>
+            </gmp-map>
+        </div>
+    </div>
+</div>
+
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsPrc8YoOvGyqqBXgIWJHhQxH6D-ItEis&callback=console.debug&libraries=maps,marker&v=beta"></script>
+<style>
+    gmp-map {
+        height: 100%;
+        width: 100%;
+    }
+</style>
+
+{{>layout/footer}}
