@@ -8,6 +8,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/user")
-public class UserController extends GenericController<UserDto, Long, UserService> {
-
+public class UserController {
 }

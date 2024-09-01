@@ -3,24 +3,17 @@ package kr.luciddevlog.reservation.user.dto;
 import kr.luciddevlog.reservation.user.entity.UserItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class UserDto {
-    private Long id;
+    private Long userId;
     private String username;
-    private String name;
 
-    public UserItem toEntity() {
-        return UserItem.builder().build();
-    }
-
-    // 나중에 손볼지도
-    public static UserDto of(Long id, String username, String name) {
-        return UserDto.builder()
-                .id(id)
-                .username(username)
-                .name(name)
-                .build();
+    public static UserDto of(UserItem userItem) {
+        return new UserDto(userItem.getId(), userItem.getUsername());
     }
 }

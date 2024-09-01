@@ -39,7 +39,7 @@ public class AuthProvider implements AuthenticationProvider {
 
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
 
-        if(userItem.isAdmin() ) {
+        if(userItem.isAdmin()) {
             grantedAuthorityList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else {
             grantedAuthorityList.add(new SimpleGrantedAuthority("ROLE_USER"));

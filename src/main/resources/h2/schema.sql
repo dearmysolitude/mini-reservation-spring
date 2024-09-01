@@ -7,3 +7,5 @@ CREATE TABLE UserItem
     name VARCHAR(30) NOT NULL,
     role VARCHAR(10) NOT NULL
 );
+
+-- NOT USING: 사용하려면 ddl 설정을 비활성화
