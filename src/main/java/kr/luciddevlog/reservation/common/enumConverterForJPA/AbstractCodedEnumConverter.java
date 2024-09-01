@@ -1,4 +1,4 @@
-package kr.luciddevlog.reservation.common.enumConverter;
+package kr.luciddevlog.reservation.common.enumConverterForJPA;
 
 import jakarta.persistence.AttributeConverter;
 

@@ -32,7 +32,7 @@ public class BoardItem {
     private LocalDate createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column
     private LocalDate updatedAt;
 
     @Column(nullable = false)
