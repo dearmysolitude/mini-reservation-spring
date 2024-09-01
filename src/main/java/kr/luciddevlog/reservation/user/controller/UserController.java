@@ -9,6 +9,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/user")
 public class UserController extends GenericController<UserDto, Long, UserService> {
-    @RequestMapping("/login")
-    public void login(UserDto userDto)
+
 }
