@@ -13,6 +13,5 @@ public class NavItem {
         this.name = name;
         this.subItems = subItems;
     }
-
 }
 

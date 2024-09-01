@@ -2,42 +2,47 @@ package kr.luciddevlog.reservation.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name="UserItem")
+@Table(name="users")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class UserItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", length = 30)
+    @Column
     private Long id;
 
-    @Column(name = "username", length = 30)
+    @Column(nullable = false, unique = true, length = 30)
     private String username;
 
-    @Column(name = "password", length = 30)
+    @Column(nullable = false, length = 60)
     private String password;
 
-    @Column(name = "name")
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Temporal(TemporalType.DATE)
-    private LocalDate createdAt;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    @Column(name="role")
-    private String role;
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 
-//    @PrePersist //  JPA 엔티티가 데이터베이스에 처음 저장되기 직전에 자동으로 호출
-//    protected void onCreate() { // 생성시 시간을 생성하도록 설정
-//        createdAt = LocalDate.now();
-//    }
+    @Column(nullable = false)
+    private UserRole role;
+
     public boolean isAdmin() {
-        return this.role.equals("ROLE_ADMIN");
+        return this.role == UserRole.USER_ADMIN;
     }
-
 }
