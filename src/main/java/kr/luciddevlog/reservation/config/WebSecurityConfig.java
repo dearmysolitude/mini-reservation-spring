@@ -17,8 +17,10 @@ public class WebSecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> {
-//                    authorizeRequests.requestMatchers("/user/**").authenticated();
-//                    authorizeRequests.requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER");
+                    // 모든 사용자에게 허용할 특정 게시판 경로
+                    authorizeRequests.requestMatchers("/board/review/list", "/board/notice/list", "/board/{id}").permitAll();
+                    // /board로 시작하는 나머지 모든 경로는 인증된 사용자만 접근 가능
+                    authorizeRequests.requestMatchers("/board/**").authenticated();
                     authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN");
                     authorizeRequests.anyRequest().permitAll();
                 })

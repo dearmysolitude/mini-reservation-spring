@@ -2,7 +2,6 @@ package kr.luciddevlog.reservation.user.dto;
 
 import kr.luciddevlog.reservation.user.entity.UserItem;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

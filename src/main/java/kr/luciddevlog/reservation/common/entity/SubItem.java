@@ -1,7 +1,6 @@
 package kr.luciddevlog.reservation.common.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class SubItem {

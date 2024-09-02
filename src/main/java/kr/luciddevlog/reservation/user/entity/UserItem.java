@@ -1,14 +1,13 @@
 package kr.luciddevlog.reservation.user.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -31,6 +30,11 @@ public class UserItem {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @Column(nullable = false, length = 20)
+    @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$", message = "올바른 전화번호 형식이 아닙니다. (예: 010-1234-5678)")
+    @NotBlank(message = "전화번호는 필수 입력 항목입니다.")
+    private String phoneNumber;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -44,5 +48,9 @@ public class UserItem {
 
     public boolean isAdmin() {
         return this.role == UserRole.USER_ADMIN;
+    }
+
+    public void changeIntoEncodedPassword(String encodedPassword) {
+        this.password = encodedPassword;
     }
 }

@@ -29,6 +29,33 @@
                     </li>
                 {{/navItems}}
             </ul>
+            <ul class="navbar-nav">
+                {{#user}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{username}}님 환영합니다
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="">마이페이지</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="/logout" method="post">
+                                    <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}"/>
+                                    <button type="submit" class="dropdown-item">로그아웃</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                {{/user}}
+                {{^user}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">로그인</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">회원가입</a>
+                    </li>
+                {{/user}}
+            </ul>
         </div>
     </div>
 </nav>
