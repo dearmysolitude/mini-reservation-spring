@@ -1,6 +1,8 @@
 package kr.luciddevlog.reservation.board.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import kr.luciddevlog.reservation.board.dto.BoardForm;
 import kr.luciddevlog.reservation.board.dto.BoardItemWithAuthorName;
 import kr.luciddevlog.reservation.user.entity.UserItem;
@@ -49,7 +51,9 @@ public class BoardItem {
     private BoardCategory category;
 
     //  아래 필드들은 Comment에 대해서만 적용됨. BoardCategory: 1-NOTICE(아래 필드 모두 null), 2-REVIEW
-    @Column
+    @Column(columnDefinition = "integer check (score between 1 and 5)")
+    @Min(value = 1, message = "점수는 최소 1 이어야 합니다")
+    @Max(value = 5, message = "점수는 최대 5 여야 합니다")
     private Integer score;
 
     @Column

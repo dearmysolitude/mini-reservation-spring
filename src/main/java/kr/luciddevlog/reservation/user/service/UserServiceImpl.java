@@ -4,6 +4,7 @@ import kr.luciddevlog.reservation.user.dto.LoginForm;
 import kr.luciddevlog.reservation.user.dto.MemberInfo;
 import kr.luciddevlog.reservation.user.dto.RegisterForm;
 import kr.luciddevlog.reservation.user.entity.UserItem;
+import kr.luciddevlog.reservation.user.entity.UserRole;
 import kr.luciddevlog.reservation.user.exception.InvalidCredentialsException;
 import kr.luciddevlog.reservation.user.exception.UserAlreadyExistsException;
 import kr.luciddevlog.reservation.user.exception.UserNotFoundException;
@@ -26,26 +27,24 @@ public class UserServiceImpl implements UserService {
     private boolean registered(String userName) {
         return userItemRepository.findByUsername(userName) != null;
     }
-
-    public UserItem login(LoginForm loginForm) {
-        UserItem member = userItemRepository.findByUsername(loginForm.getUsername());
-        if(member == null) {
-            throw new UserNotFoundException("사용자를 찾을 수 없습니다.");
-        }
-        if (!passwordEncoder.matches(loginForm.getPassword(), member.getPassword())) {
-            // 검증할 비밀 번호, 암호화된 비밀 번호로 입력함
-            throw new InvalidCredentialsException("비밀번호가 맞지 않습니다.");
-        }
-        return member;
+    private boolean duplicatedPhoneNumber(String userName) {
+        return userItemRepository.findByPhoneNumber(userName) != null;
     }
 
     public void register(RegisterForm form) {
         if(registered(form.getUsername())) {
             throw new UserAlreadyExistsException("이미 존재하는 ID입니다.");
         }
-        if(registered(form.getPhoneNumber())) {
+        if(duplicatedPhoneNumber(form.getPhoneNumber())) {
             throw new UserAlreadyExistsException("이미 존재하는 연락처입니다.");
         }
+
+//        UserItem register = UserItem.builder()
+//                .role(UserRole.ROLE_USER)
+//                .phoneNumber(form.getPhoneNumber())
+//                .username(form.getUsername())
+//                .name()
+//                .build();
         UserItem member = form.toEntity();
         member.changeIntoEncodedPassword(passwordEncoder.encode(form.getPassword()));
         userItemRepository.save(member);

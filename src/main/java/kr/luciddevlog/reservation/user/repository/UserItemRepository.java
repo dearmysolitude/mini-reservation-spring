@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserItemRepository extends JpaRepository<UserItem, Long> {
     UserItem findByUsername(String username);
+    UserItem findByPhoneNumber(String phoneNumber);
 }

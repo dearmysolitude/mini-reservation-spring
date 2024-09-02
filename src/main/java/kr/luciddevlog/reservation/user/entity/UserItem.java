@@ -47,7 +47,7 @@ public class UserItem {
     private UserRole role;
 
     public boolean isAdmin() {
-        return this.role == UserRole.USER_ADMIN;
+        return this.role == UserRole.ROLE_ADMIN;
     }
 
     public void changeIntoEncodedPassword(String encodedPassword) {

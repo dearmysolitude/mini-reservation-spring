@@ -5,7 +5,7 @@ import kr.luciddevlog.reservation.common.enumConverterForJPA.CodedEnum;
 
 public enum ReservationStatus implements CodedEnum<Integer> {
     BEFORE_DEPOSIT(0),
-    BEFORE_CHECKIN(1),
+    BEFORE_CHECK_IN(1),
     CHECKED_IN(2),
     CHECKOUT(3),
     CANCELED(-1);

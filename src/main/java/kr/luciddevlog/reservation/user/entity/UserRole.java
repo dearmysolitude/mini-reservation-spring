@@ -4,8 +4,8 @@ import kr.luciddevlog.reservation.common.enumConverterForJPA.AbstractCodedEnumCo
 import kr.luciddevlog.reservation.common.enumConverterForJPA.CodedEnum;
 
 public enum UserRole implements CodedEnum<Integer> {
-    USER_ADMIN(1),
-    USER_ROLE(2);
+    ROLE_ADMIN(1),
+    ROLE_USER(2);
 
     private final int code;
 
