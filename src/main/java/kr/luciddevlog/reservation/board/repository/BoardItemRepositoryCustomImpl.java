@@ -38,7 +38,9 @@ public class BoardItemRepositoryCustomImpl implements BoardItemRepositoryCustom{
                         boardItem.reCnt,
                         boardItem.rootId,
                         boardItem.viewCnt,
-                        userItem.name))
+                        userItem.name,
+                        boardItem.category
+                        ))
                 .from(boardItem)
                 .leftJoin(boardItem.writer, userItem)
                 .where(boardItem.category.eq(category), boardItem.rootId.isNull())
@@ -65,9 +67,11 @@ public class BoardItemRepositoryCustomImpl implements BoardItemRepositoryCustom{
                         boardItem.reCnt,
                         boardItem.rootId,
                         boardItem.viewCnt,
-                        boardItem.writer.name.as("writerName")))
+                        userItem.name,
+                        boardItem.category
+                        ))
                 .from(boardItem)
-                .leftJoin(boardItem.writer)
+                .leftJoin(boardItem.writer, userItem)
                 .where(boardItem.id.eq(id))
                 .fetchOne();
     }

@@ -1,5 +1,6 @@
 package kr.luciddevlog.reservation.user.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import kr.luciddevlog.reservation.user.dto.LoginForm;
@@ -15,12 +16,12 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -43,25 +44,25 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String makeNewUser(@Valid RegisterForm form, BindingResult bindingResult, Model model){
+    public String makeNewUser(@Valid @ModelAttribute RegisterForm form, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors()
                     .stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toList();
-            model.addAttribute("error", errors);
+            model.addAttribute("errors", errors);
             return "member/signup";
         }
 
-        List<String> message = new ArrayList<>();
+        List<String> messages = new ArrayList<>();
         try {
             userService.register(form);
-            message.add("회원 가입 완료: 로그인 하세요.");
-            model.addAttribute("message", message);
+            messages.add("회원 가입 완료: 로그인 하세요.");
+            model.addAttribute("messages", messages);
             return "member/login";
         } catch (UserAlreadyExistsException e) {
-            message.add(e.getMessage());
-            model.addAttribute("message", message);
+            messages.add(e.getMessage());
+            model.addAttribute("messages", messages);
             return "member/signup";
         }
     }

@@ -55,7 +55,4 @@ public class UserItem {
         return this.role == UserRole.ROLE_ADMIN;
     }
 
-    public void changeIntoEncodedPassword(String encodedPassword) {
-        this.password = encodedPassword;
-    }
 }

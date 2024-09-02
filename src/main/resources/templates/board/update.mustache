@@ -86,11 +86,6 @@
             }
             return true;
         }
-        function deletePost(id) {
-            if(confirm("정말로 삭제하시겠습니까?")) {
-                window.location.href = "delete/" + id;
-            }
-        }
     </script>
 </head>
 <body>
@@ -117,10 +112,8 @@
             </table>
             <div>
                 <button type="submit" class="btn btn-primary">수정 완료</button>
-                <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
-                <button type="button" class="btn btn-danger" onclick="deletePost({{boardItem.id}})">삭제</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='/reservation/board/{{boardItem.id}}'">취소</button>
             </div>
-        </div>
     </form>
 </div>
 </body>

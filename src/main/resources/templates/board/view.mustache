@@ -88,9 +88,9 @@
                 </tr>
             </table>
             <div class="board-buttons">
-                <button class="btn btn-secondary" onClick="history.back()">목록</button>
-                <button class="btn btn-primary" onClick="location.href='update?id={{boardItem.id}}'">수정</button>
-                <button type="button" class="btn btn-danger" onclick="deletePost({{boardItem.id}})">삭제</button>
+                <button class="btn btn-secondary" onClick="location.href='{{listUrl}}'">목록</button>
+                <button class="btn btn-primary" onClick="location.href='{{boardItem.category}}/update?id={{boardItem.id}}'">수정</button>
+                <button type="button" class="btn btn-danger" onclick="deletePost('{{boardItem.category}}', '{{boardItem.id}}')">삭제</button>
             </div>
 
             <!-- 댓글 섹션 -->
@@ -145,9 +145,9 @@
     let currentAction = '';
     let currentCommentId = null;
 
-    function deletePost(id) {
+    function deletePost(category, id) {
         if(confirm("정말로 삭제하시겠습니까?")) {
-            window.location.href = "delete/" + id;
+            window.location.href = category + "/delete/" + id;
         }
     }
 
@@ -225,6 +225,13 @@
             form.submit();
         }
     }
+    <!-- URL 파라미터에서 'updated=true'를 확인 -->
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('updated') === 'true') {
+        <!-- 현재 페이지를 히스토리에서 교체하여 수정 페이지로의 뒤로가기를 방지 -->
+        history.replaceState(null, '', window.location.pathname);
+    }
+
 </script>
 
 {{>layout/footer}}

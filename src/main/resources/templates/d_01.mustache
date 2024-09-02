@@ -1,0 +1,50 @@
+{{>layout/header}}
+<style>
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        .day {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .room-status {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+        .room {
+            width: 45%;
+            padding: 2px;
+            font-size: 0.8em;
+        }
+        .available {
+            background-color: #d4edda;
+        }
+        .booked {
+            background-color: #f8d7da;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">호텔 예약 현황 (30일)</h1>
+    <div class="calendar">
+        {{#days}}
+            <div class="day">
+                <div class="date">{{date}}</div>
+                <div class="room-status">
+                    <div class="room room1 {{#room1.available}}available{{/room1.available}}{{^room1.available}}booked{{/room1.available}}">
+                        Room 1
+                    </div>
+                    <div class="room room2 {{#room2.available}}available{{/room2.available}}{{^room2.available}}booked{{/room2.available}}">
+                        Room 2
+                    </div>
+                </div>
+            </div>
+        {{/days}}
+    </div>
+</div>
+{{>layout/footer}}

@@ -175,6 +175,8 @@ public BoardItem createBoard(BoardForm boardForm, Long memberId) {
 				.title(boardForm.getTitle())
 				.content(boardForm.getContent())
 				.writer(member)
+				.category(boardForm.getCategory())
+				.rootId(boardForm.getRootId())
 				.rootId(boardForm.getRootId())
 				.build();
 		return boardItemRepository.save(board);

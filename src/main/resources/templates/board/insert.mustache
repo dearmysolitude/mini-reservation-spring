@@ -1,104 +1,39 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>새 글 쓰기</title>
-    <script>
-        function checkTitle(form) {
-            if(form.title.value.trim() == '') {
-                alert("제목을 입력해주세요.");
-                form.title.focus();
-                return false;
-            }
-            return true;
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .make-board-item {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 80%;
-            max-width: 600px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            width: 20%;
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        textarea {
-            height: 100px;
-            resize: vertical;
-        }
-        .btn-primary {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            float: right;
-        }
-        .btn-primary:hover {
-            background-color: #45a049;
-        }
-    </style>
+{{>layout/header}}
 </head>
 <body>
-<form class="make-board-item" action="write" name="insertForm" method="post"  onsubmit="return checkTitle(this);">
-    <div class="input-group">
-        <table>
-            <tr>
-                <th>번호</th>
-                <td>신규(insert)</td>
-            </tr>
-            <tr>
-                <th>제목</th>
-                <td>
-                    <label>
-                        <input type="text" name="title">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <th>내용</th>
-                <td>
-                    <label>
-                        <textarea rows="40" cols="40" name="content" ></textarea>
-                    </label>
-                </td>
-            </tr>
-        </table>
-        <button type="submit" class="btn btn-primary" onSubmit="return checkTitle(insertForm)">추가</button>
+<div class="main-container">
+    <div class="content-wrapper">
+        <form class="make-board-item" action="/reservation/board/write" method="post" onsubmit="return checkTitle(this);">
+            <div class="mb-3">
+                <table class="table">
+                    <tr>
+                        <th>번호</th>
+                        <td>신규(insert)</td>
+                    </tr>
+                    <tr>
+                        <th>제목</th>
+                        <td>
+                            <input type="text" class="form-control" name="title" placeholder="제목 입력">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td>
+                            <textarea class="form-control" rows="5" name="content" placeholder="내용 입력"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <input type="hidden" name="category" value="{{insertForm.category}}">
+            <input type="hidden" name="memberId" value="{{insertForm.memberId}}">
+            {{#insertForm.rootId}}
+                <input type="hidden" name="rootId" value="{{insertForm.rootId}}">
+            {{/insertForm.rootId}}
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">추가</button>
+            </div>
+        </form>
     </div>
-</form>
-</body>
-</html>
+</div>
+<body>
+{{>layout/footer}}

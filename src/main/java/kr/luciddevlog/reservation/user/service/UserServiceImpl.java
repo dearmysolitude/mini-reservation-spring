@@ -35,13 +35,17 @@ public class UserServiceImpl implements UserService {
         if(duplicatedPhoneNumber(form.getPhoneNumber())) {
             throw new UserAlreadyExistsException("이미 존재하는 연락처입니다.");
         }
+
+        String encodedPassword = passwordEncoder.encode(form.getPassword());
+
         UserItem register = UserItem.builder()
                 .role(UserRole.ROLE_USER)
                 .phoneNumber(form.getPhoneNumber())
                 .username(form.getUsername())
                 .name(form.getName())
+                .password(encodedPassword)  // 직접 인코딩된 비밀번호 설정
                 .build();
-        register.changeIntoEncodedPassword(passwordEncoder.encode(form.getPassword()));
+
         userItemRepository.save(register);
     }
 

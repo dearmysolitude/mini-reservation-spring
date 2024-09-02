@@ -15,7 +15,7 @@ public class CommentForm {
     private Long memberId; // 게시글을 다는 멤버의 아이디
     private Long id; // 원본 댓글
 
-    public void addMember(MemberInfo memberInfo) {
-        this.memberId = memberInfo.getId();
+    public void addMember(Long id) {
+        this.memberId = id;
     }
 }
