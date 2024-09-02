@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.luciddevlog.reservation.common.entity.NavItem;
 import kr.luciddevlog.reservation.common.entity.SubItem;
+import kr.luciddevlog.reservation.user.dto.MemberInfo;
 import kr.luciddevlog.reservation.user.entity.CustomUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +27,7 @@ public class NavbarAndUserInfoInterceptor implements HandlerInterceptor {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth != null && auth.getPrincipal() instanceof CustomUserDetails) {
                 CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
-                modelAndView.addObject("user", userDetails.getUserItem());
+                modelAndView.addObject("user", new MemberInfo(userDetails.getUserItem()));
             }
         }
     }
