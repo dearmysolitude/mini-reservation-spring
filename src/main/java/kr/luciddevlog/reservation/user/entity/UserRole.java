@@ -3,22 +3,22 @@ package kr.luciddevlog.reservation.user.entity;
 import kr.luciddevlog.reservation.common.enumConverterForJPA.AbstractCodedEnumConverter;
 import kr.luciddevlog.reservation.common.enumConverterForJPA.CodedEnum;
 
-public enum UserRole implements CodedEnum<Integer> {
-    ROLE_ADMIN(1),
-    ROLE_USER(2);
+public enum UserRole implements CodedEnum<String> {
+    ROLE_ADMIN("ROLE_ADMIN"),
+    ROLE_USER("ROLE_USER");
 
-    private final int code;
+    private final String code;
 
-    UserRole(int code) {
+    UserRole(String code) {
         this.code = code;
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
     @jakarta.persistence.Converter(autoApply = true)
-    static class Converter extends AbstractCodedEnumConverter<UserRole, Integer> {
+    static class Converter extends AbstractCodedEnumConverter<UserRole, String> {
         public Converter() {
             super(UserRole.class);
         }

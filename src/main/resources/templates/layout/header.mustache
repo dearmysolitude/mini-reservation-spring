@@ -36,11 +36,10 @@
                             {{username}}님 환영합니다
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="">마이페이지</a></li>
+                            <li><a class="dropdown-item" href="/reservation/admin_allview">예약 수정 및 삭제</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <form action="/logout" method="post">
-                                    <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}"/>
+                                <form action="/reservation/user/logout" method="post">
                                     <button type="submit" class="dropdown-item">로그아웃</button>
                                 </form>
                             </li>

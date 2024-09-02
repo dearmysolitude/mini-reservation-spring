@@ -4,11 +4,14 @@ import kr.luciddevlog.reservation.user.entity.UserItem;
 import kr.luciddevlog.reservation.user.repository.UserItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +21,12 @@ import java.util.List;
 @Service
 public class AuthProvider implements AuthenticationProvider {
     private final PasswordEncoder passwordEncoder;
-    private final UserItemRepository userItemRepository;
+    private final UserDetailsService userDetailsService;
 
     @Autowired
-    public AuthProvider(PasswordEncoder passwordEncoder, UserItemRepository userItemRepository) {
+    public AuthProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
         this.passwordEncoder = passwordEncoder;
-        this.userItemRepository = userItemRepository;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -31,36 +34,19 @@ public class AuthProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        UserItem userItem = userItemRepository.findByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-		if(null == userItem || !passwordEncoder.matches(password, userItem.getPassword())) {
-			return null;
+		if(null == userDetails || !passwordEncoder.matches(password, userDetails.getPassword())) {
+			throw new BadCredentialsException("유효하지 않은 ID 혹은 password입니다.");
 		}
 
-        List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
+        List<GrantedAuthority> authorities = new ArrayList<>(userDetails.getAuthorities());
 
-        if(userItem.isAdmin()) {
-            grantedAuthorityList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        } else {
-            grantedAuthorityList.add(new SimpleGrantedAuthority("ROLE_USER"));
-        }
-
-        return new MyAuthentication(username, password, grantedAuthorityList, userItem);
+        return new UsernamePasswordAuthenticationToken(userDetails, password, authorities);
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
-    }
-}
-
-class MyAuthentication extends UsernamePasswordAuthenticationToken {
-    private static final long serialVersionUID = 1L;
-
-    UserItem userItem;
-
-    public MyAuthentication(String id, String password, List<GrantedAuthority> grantedAuthorityList, UserItem userItem) {
-        super(id, password, grantedAuthorityList);
-        this.userItem = userItem;
     }
 }

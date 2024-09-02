@@ -4,6 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.luciddevlog.reservation.common.entity.NavItem;
 import kr.luciddevlog.reservation.common.entity.SubItem;
+import kr.luciddevlog.reservation.user.entity.CustomUserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,12 +15,19 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class NavbarInterceptor implements HandlerInterceptor {
+public class NavbarAndUserInfoInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
         if (modelAndView != null) {
-            modelAndView.addObject("pageTitle", "** 리조트에 오신 것을 환영합니다");
-            modelAndView.addObject("navItems", getNavItems());
+                modelAndView.addObject("pageTitle", "** 리조트에 오신 것을 환영합니다");
+                modelAndView.addObject("navItems", getNavItems());
+
+            // 사용자 정보 추가
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.getPrincipal() instanceof CustomUserDetails) {
+                CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+                modelAndView.addObject("user", userDetails.getUserItem());
+            }
         }
     }
 
@@ -38,7 +48,11 @@ public class NavbarInterceptor implements HandlerInterceptor {
                 )),
                 new NavItem("게시글", List.of(
                         new SubItem("공지사항", "/reservation/board/notice/list"),
-                        new SubItem("리뷰", "/reservation/board/review/list")
+                        new SubItem("후기", "/reservation/board/review/list")
+                )),
+                new NavItem("예약하기", List.of(
+                        new SubItem("예약 현황", "/reservation/month"),
+                        new SubItem("예약하기", "/reservation/form")
                 ))
         );
     }
