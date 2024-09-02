@@ -37,34 +37,6 @@ public class UserController {
         return "member/login";
     }
 
-    @PostMapping("/login")
-    public String login(@Valid LoginForm loginForm, BindingResult bindingResult, Model model, HttpSession session) {
-        if (bindingResult.hasErrors()) {
-            List<String> errors = bindingResult.getAllErrors()
-                    .stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .toList();
-            model.addAttribute("error", errors);
-            return "member/login";
-        }
-
-        if(session.getAttribute("loggedInMember") != null) {
-            return "redirect:/board/list";
-        }
-
-        try {
-            UserItem member = userService.login(loginForm);
-            session.setAttribute("loggedInMember", new MemberInfo(member));
-            return "redirect:/";
-        } catch (UserNotFoundException | InvalidCredentialsException e) {
-            model.addAttribute("error", e.getMessage());
-            return "member/login";
-        } catch (Exception e) {
-            model.addAttribute("error", "로그인 중 예기치 않은 오류가 발생했습니다." + e.getMessage());
-            return "member/login";
-        }
-    }
-
     @GetMapping("/signup")
     public String signup() {
         return "member/signup";

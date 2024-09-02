@@ -47,7 +47,7 @@ public class BoardController {
         } else {
             whatCategory = BoardCategory.REVIEW;
         }
-
+        System.out.println("현재 default page: "+ page);
         Page<BoardItemWithAuthorName> boardList = boardService.searchContents(whatCategory, pageSize, page);
         Pagination pageInfo = boardService.makePageInfo(whatCategory, pageSize, page);
 
@@ -68,7 +68,7 @@ public class BoardController {
             pages.add(pageList);
         }
         model.addAttribute("pages", pages);
-
+        model.addAttribute("BoardName", whatCategory);
         model.addAttribute("showNextPage", pageInfo.getN() != 0);
         model.addAttribute("nextPageUrl", calculatePageUrl(pageSize, pageInfo.getN()));
         model.addAttribute("showNextNextPage", pageInfo.getNn() != 0);

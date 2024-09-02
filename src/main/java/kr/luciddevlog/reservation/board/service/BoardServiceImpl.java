@@ -59,7 +59,7 @@ public class BoardServiceImpl implements BoardService {
 		int totalPage = countTotalPage(boardCategory, sizePerPage);
 		// currentPage가 1보다 작거나 최대 크기보다 큰 경우에 대한 처리가 필요함.
 		if(currentPage < 1) currentPage = 1;
-		if(currentPage > totalPage) currentPage = totalPage;
+		if(currentPage > totalPage && totalPage != 0) currentPage = totalPage;
 
 		// 0-based index로 변환
 		int pageIndex = currentPage - 1;
@@ -131,6 +131,10 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	private List<Integer> makePages(int currentPage, int totalPage) {
+		if(totalPage == 0) {
+			totalPage = 1;
+		}
+
 		if(currentPage <= 0) {
 			currentPage = 1;
 		}
@@ -138,23 +142,23 @@ public class BoardServiceImpl implements BoardService {
 			currentPage = totalPage;
 		}
 
-		// 보여줄 페이지 목록
+								 // 보여줄 페이지 목록
 		ArrayList<Integer> pages = new ArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-		ArrayList<Integer> retPages = new ArrayList<>();
-		int pageRange = (currentPage / PAGE_UNIT) * PAGE_UNIT;
+	ArrayList<Integer> retPages = new ArrayList<>();
+	int pageRange = (currentPage / PAGE_UNIT) * PAGE_UNIT;
 		if((currentPage % PAGE_UNIT == 0)) {
-			pageRange -= PAGE_UNIT;
-		}
-		for(int i = 0; i < pages.size(); i++) {
-			if(pages.get(i) + pageRange > totalPage) {
-				break;
-			}
-			retPages.add(i, pages.get(i) + pageRange);
-		}
-		return retPages;
+		pageRange -= PAGE_UNIT;
 	}
+		for(int i = 0; i < pages.size(); i++) {
+		if(pages.get(i) + pageRange > totalPage) {
+			break;
+		}
+		retPages.add(i, pages.get(i) + pageRange);
+	}
+		return retPages;
+}
 
-	public BoardItem createBoard(BoardForm boardForm, Long memberId) {
+public BoardItem createBoard(BoardForm boardForm, Long memberId) {
 		String title = boardForm.getTitle();
 		String content = boardForm.getContent();
 		UserItem member = userItemRepository.findById(memberId).orElse(null);

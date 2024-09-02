@@ -37,8 +37,8 @@ public class NavbarInterceptor implements HandlerInterceptor {
                         new SubItem("조아해수욕장", "/reservation/bada")
                 )),
                 new NavItem("게시글", List.of(
-                        new SubItem("공지사항", "/reservation/notice/list"),
-                        new SubItem("리뷰", "/reservation/comment/list")
+                        new SubItem("공지사항", "/reservation/board/notice/list"),
+                        new SubItem("리뷰", "/reservation/board/review/list")
                 ))
         );
     }

@@ -3,11 +3,13 @@ package kr.luciddevlog.reservation.board.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class BoardItemWithAuthorName {
     private Long id;
@@ -18,6 +20,6 @@ public class BoardItemWithAuthorName {
     private Integer reLevel;
     private Integer reCnt;
     private Long rootId;
-    private int viewCnt;
-    private String writer;
+    private Integer viewCnt;
+    private String writerName;
 }

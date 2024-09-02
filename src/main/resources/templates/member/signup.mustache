@@ -1,0 +1,57 @@
+{{>layout/header}}
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    .main-container {
+        background-image: url('/reservation/static/images/background.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: calc(100vh - 56px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .content-wrapper {
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 2rem;
+        border-radius: 10px;
+        max-width: 400px;
+        width: 100%;
+    }
+    .form-control {
+        margin-bottom: 1rem;
+    }
+    .btn-primary {
+        width: 100%;
+    }
+</style>
+<div class="main-container">
+    <div class="content-wrapper">
+        <h2 class="mb-4">회원 가입하기</h2>
+        <form action="/reservation/user/signup" method="POST">
+            <input type="text" class="form-control" name="userName" placeholder="아이디" required>
+            <input type="password" class="form-control" name="userPw" placeholder="비밀번호" required>
+            <input type="tel" class="form-control" name="phoneNumber" placeholder="전화 번호" required>
+            <button type="submit" class="btn btn-primary">가입</button>
+        </form>
+        {{#error}}
+            <div class="alert alert-danger mt-3" role="alert">
+                {{.}}
+            </div>
+        {{/error}}
+        {{#message}}
+            <div class="alert alert-info mt-3" role="alert">
+                {{.}}
+            </div>
+        {{/message}}
+        <div class="mt-3">
+            <a href="login" class="btn btn-link">로그인 페이지로 돌아가기</a>
+        </div>
+    </div>
+</div>
+{{>layout/footer}}

@@ -70,7 +70,7 @@ public class BoardItem {
                 .content(this.content)
                 .createdAt(this.createdAt)
                 .updatedAt(this.updatedAt)
-                .writer(this.writer.getUsername())
+                .writerName(this.writer.getName())
                 .reCnt(this.reCnt)
                 .reLevel(this.reLevel)
                 .id(this.id)
