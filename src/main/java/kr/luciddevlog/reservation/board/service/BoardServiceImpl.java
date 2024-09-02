@@ -47,12 +47,8 @@ public class BoardServiceImpl implements BoardService {
 
 	private Long getTotalItems(BoardCategory boardCategory) {
 		Long totalItems;
-		if(boardCategory !=BoardCategory.NOTICE) {
-			totalItems = boardItemRepository.countByCategory(boardCategory);
-		} else {
-			totalItems = boardItemRepository.countByCategoryAndRootIdIsNull(boardCategory);
-		}
-		return totalItems;
+        totalItems = boardItemRepository.countByCategoryAndRootIdIsNull(boardCategory);
+        return totalItems;
 	}
 
 	public Page<BoardItemWithAuthorName> searchContents(BoardCategory boardCategory, int sizePerPage, int currentPage) {

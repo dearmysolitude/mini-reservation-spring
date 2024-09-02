@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +25,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> {
                     authorizeRequests.requestMatchers("/h2-console/**").permitAll(); // H2 콘솔 접근 허용
                     // 모든 사용자에게 허용할 특정 게시판 경로
-                    authorizeRequests.requestMatchers("/board/review/list", "/board/notice/list", "/board/{id}").permitAll();
+                    authorizeRequests.requestMatchers("/board/review/list", "/board/notice/list", "/board/{id}", "/board/{id}").permitAll();
                     // /board로 시작하는 나머지 모든 경로는 인증된 사용자만 접근 가능
                     authorizeRequests.requestMatchers("/board/**").authenticated();
                     authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN");
@@ -33,7 +34,7 @@ public class WebSecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/user/login")
                         .loginProcessingUrl("/user/login")
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
                         .failureUrl("/user/login?error=true"))
                 .logout(logout -> logout
                         .logoutUrl("/user/logout")

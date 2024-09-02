@@ -48,7 +48,6 @@
             <table class="table table-hover">
                 <thead class="table-light">
                 <tr>
-                    <th>번호</th>
                     <th>제목</th>
                     <th>작성자</th>
                     <th>조회수</th>
@@ -58,8 +57,7 @@
                 <tbody>
                 {{#BoardItem}}
                     <tr>
-                        <td data-label="번호">{{id}}</td>
-                        <td data-label="제목"><a href="{{id}}" class="text-decoration-none">{{title}}</a></td>
+                        <td data-label="제목"><a href="/reservation/board/{{id}}" class="text-decoration-none">{{title}}</a></td>
                         <td data-label="작성자">{{writerName}}</td>
                         <td data-label="조회수">{{viewCnt}}</td>
                         <td data-label="작성일">{{createdAt}}</td>
@@ -97,7 +95,6 @@
                 {{/showNextNextPage}}
             </ul>
         </nav>
-
         <p class="text-center mt-3">총 게시물 수: {{totalItems}}</p>
         <div class="text-end mt-3">
             <a href="insert" class="btn btn-primary">글쓰기</a>

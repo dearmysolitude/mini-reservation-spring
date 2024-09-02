@@ -3,7 +3,6 @@ package kr.luciddevlog.reservation.board.repository;
 import static kr.luciddevlog.reservation.board.entity.QBoardItem.boardItem;
 import static kr.luciddevlog.reservation.user.entity.QUserItem.userItem;
 
-
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -43,7 +42,7 @@ public class BoardItemRepositoryCustomImpl implements BoardItemRepositoryCustom{
                 .from(boardItem)
                 .leftJoin(boardItem.writer, userItem)
                 .where(boardItem.category.eq(category), boardItem.rootId.isNull())
-                .orderBy(boardItem.id.asc());
+                .orderBy(boardItem.id.desc());
 
         long total = query.fetchCount();
 

@@ -1,381 +1,230 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>게시글 읽기</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px 0;
-        }
-        .main-content {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 80%;
-            max-width: 800px;
-        }
-        .board-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        .board-table th, .board-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .board-table th {
-            background-color: #f2f2f2;
-            width: 120px;
-        }
-        .board-table .full-width td {
-            width: calc(100% - 120px);
-        }
-        .board-table .content-row {
-            height: 300px;
-        }
-        .board-table .content-cell {
-            vertical-align: top;
-        }
-        .board-table .content-text {
-            height: 100%;
-            overflow-y: auto;
-        }
-        .board-table .comment-info th,
-        .board-table .comment-info td {
-            width: 25%;
-        }
-        .buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-        .list-btn {
-            background-color: #f0f0f0;
-            color: #333;
-        }
-        .edit-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        button:hover {
-            opacity: 0.8;
-        }
-        .btn-danger {
-            background-color: #dc3545;
-        }
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
-        .comment-section {
-            margin-top: 30px;
-        }
-        .comment-list {
-            margin-bottom: 20px;
-        }
-    .comment-section {
-        margin-top: 2rem;
+{{>layout/header}}
+<style>
+    /* 게시판 특화 추가 스타일 */
+    .main-container .content-wrapper.board-page {
+        max-width: 1000px !important;
+        width: 90% !important;
+        margin: 0 auto !important;
+        padding: 20px !important;
+        max-height: 80vh !important; /* 뷰포트 높이의 80%로 제한 */
+        overflow-y: auto !important; /* 세로 스크롤 추가 */
     }
-
-    .comment-section__title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+    .board-container {
+        width: 100%;
+        margin: 20px auto;
     }
-
-    .comment {
-        border-bottom: 1px solid #eee;
-        padding: 1rem 0;
+    .board-table {
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 5px;
     }
-
-    .comment-header {
-        margin-bottom: 0.5rem;
+    .board-table th {
+        width: 15%;
+        background-color: rgba(242, 242, 242, 0.7);
+        padding: 10px;
+        text-align: left;
     }
-
-    .comment-date {
-        color: #777;
-        font-size: 0.9rem;
+    .board-table td {
+        padding: 10px;
     }
-
-    .comment-body {
+    .board-info {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
     }
-
-    .comment-content {
-        flex-grow: 1;
+    .board-info-item {
+        flex: 1;
     }
-
-    .comment-indent {
-        color: #aaa;
-        margin-right: 0.5rem;
+    .board-content {
+        min-height: 200px;
+        white-space: pre-wrap;
+        max-height: 400px;
+        overflow-y: auto;
     }
-
-    .comment-actions {
-        display: flex;
-        gap: 0.5rem;
+    .board-buttons {
+        text-align: right;
+        margin: 20px 0;
     }
-
-    .comment-form {
-        margin-top: 1rem;
-    }
-
-    .comment-input {
-        width: 100%;
-        margin-bottom: 0.5rem;
-        padding: 0.5rem;
-    }
-
-    .btn {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.875rem;
-    }
-    .comment-popup {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .comment-popup-content {
-        background-color: white;
-        padding: 20px;
+    .comment-section {
+        background-color: rgba(255, 255, 255, 0.9);
         border-radius: 5px;
-        width: 80%;
-        max-width: 500px;
+        padding: 20px;
+        margin-top: 20px;
     }
-
-    .comment-popup-content h4 {
-        margin-top: 0;
+    .comment {
+        border-bottom: 1px solid #eee;
+        padding: 10px 0;
     }
-
-    .comment-popup-content textarea {
+    .comment-form textarea {
         width: 100%;
         margin-bottom: 10px;
     }
-
-    .popup-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
+    .comment-actions {
+        text-align: right;
     }
-    </style>
-    <script>
-        const boardId = {{boardItem.id}};
-        function goBack() {
-            window.history.back();
-        }
-        function deletePost(id) {
-            if(confirm("정말로 삭제하시겠습니까?")) {
-                window.location.href = "delete/" + id;
-            }
-        }
+</style>
 
-        let currentAction = '';
-        let currentCommentId = null;
+<div class="main-container">
+    <div class="content-wrapper board-page" style="max-width: 1000px; width: 90%; margin: 0 auto; padding: 20px; max-height: 80vh; overflow-y: auto;">
+        <div class="board-container">
+            <h1>게시글 읽기</h1>
+            <table class="board-table">
+                <tr>
+                    <th>제목</th>
+                    <td colspan="3">{{boardItem.title}}</td>
+                </tr>
+                <tr>
+                    <th>글쓴이</th>
+                    <td>{{boardItem.writerName}}</td>
+                    <th>조회 수</th>
+                    <td>{{boardItem.viewCnt}}</td>
+                </tr>
+                <tr>
+                    <th>작성일</th>
+                    <td colspan="3">{{boardItem.createdAt}}</td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td colspan="3"><div class="board-content">{{boardItem.content}}</div></td>
+                </tr>
+            </table>
+            <div class="board-buttons">
+                <button class="btn btn-secondary" onClick="history.back()">목록</button>
+                <button class="btn btn-primary" onClick="location.href='update?id={{boardItem.id}}'">수정</button>
+                <button type="button" class="btn btn-danger" onclick="deletePost({{boardItem.id}})">삭제</button>
+            </div>
 
-        function showPopup(action, commentId) {
-            currentAction = action;
-            currentCommentId = commentId;
-            const popup = document.getElementById('commentPopup');
-            const title = document.getElementById('popupTitle');
-            const input = document.getElementById('popupInput');
-
-            if (action === 'reply') {
-                title.textContent = '답글 작성';
-                input.value = '';
-            } else if (action === 'edit') {
-                title.textContent = '댓글 수정';
-
-            }
-            popup.style.display = 'flex';
-        }
-
-        function closePopup() {
-            document.getElementById('commentPopup').style.display = 'none';
-        }
-
-        function submitPopup() {
-            const input = document.getElementById('popupInput');
-            const content = input.value.trim();
-            if (content) {
-                if (currentAction === 'reply') {
-                    submitReply(currentCommentId, content);
-                } else if (currentAction === 'edit') {
-                    submitEdit(currentCommentId, content);
-                }
-            }
-
-            closePopup();
-        }
-
-        function submitReply(parentId, content) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `${boardId}/comment`;  // boardId는 전역 변수로 설정되어 있어야 합니다.
-
-            const commentIdInput = document.createElement('input');
-            commentIdInput.type = 'hidden';
-            commentIdInput.name = 'parentId';
-            commentIdInput.value = parentId;
-
-            const contentInput = document.createElement('input');
-            contentInput.type = 'hidden';
-            contentInput.name = 'content';
-            contentInput.value = content;
-
-            form.appendChild(commentIdInput);
-            form.appendChild(contentInput);
-
-            document.body.appendChild(form);
-            form.submit();
-        }
-
-        function submitEdit(commentId, content) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `comment/update/${commentId}`;
-
-            const contentInput = document.createElement('input');
-            contentInput.type = 'hidden';
-            contentInput.name = 'content';
-            contentInput.value = content;
-
-            form.appendChild(contentInput);
-
-            document.body.appendChild(form);
-            form.submit();
-        }
-
-        function deleteComment(commentId) {
-            if(confirm("정말로 삭제하시겠습니까?")) {
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = `comment/delete/${commentId}`;
-
-                document.body.appendChild(form);
-                form.submit();
-            }
-        }
-    </script>
-</head>
-<body>
-<div class="main-content">
-    <table class="board-table">
-        <tr>
-            <th>번호</th>
-            <td colspan="3">{{boardItem.id}}</td>
-        </tr>
-        <tr>
-            <th>제목</th>
-            <td colspan="3">{{boardItem.title}}</td>
-        </tr>
-        <tr>
-            <th>글쓴이</th>
-            <td colspan="3">{{boardItem.authorName}}</td>
-        </tr>
-        <tr>
-            <th>일자</th>
-            <td colspan="3">{{boardItem.createdAt}}</td>
-        </tr>
-        <tr>
-            <th>조회 수</th>
-            <td colspan="3">{{boardItem.viewCnt}}</td>
-        </tr>
-        <tr class="content-row">
-            <th>내용</th>
-            <td class="content-cell" colspan="3">
-                <div class="content-text">
-                    {{boardItem.content}}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th>원글</th>
-            <td colspan="3">{{boardItem.rootId}}</td>
-        </tr>
-        <tr class="comment-info">
-            <th>댓글 수준</th>
-            <td>{{boardItem.reLevel}}</td>
-            <th>댓글 내 순서</th>
-            <td>{{boardItem.reCnt}}</td>
-        </tr>
-    </table>
-    <div class="buttons">
-        <button class="list-btn" onClick="location.href='list'">목록</button>
-        <button class="edit-btn" onClick="location.href='update?id={{boardItem.id}}'">수정</button>
-        <button type="button" class="btn btn-danger" onclick="deletePost({{boardItem.id}})">삭제</button>
-<!--        <button class="list-btn" onClick="location.href='reInsertForm?id={{boardItem.id}}'">답변글 작성</button>-->
-    </div>
-
-    <!-- 댓글 섹션 -->
-    <div class="comment-section">
-        <h3 class="comment-section__title">댓글</h3>
-        <div class="comment-list">
-            {{#comments}}
-                <div class="comment" data-comment-id="{{id}}">
-                    <div class="comment-header">
-                        <span class="comment-date">{{createdAt}}</span>
-                    </div>
-                    <div class="comment-body">
-                        <div class="comment-content">
-                            {{#indents}}
-                                <span class="comment-indent">&gt;</span>
-                            {{/indents}}
-                            <span class="comment-text">{{content}}</span>
+            <!-- 댓글 섹션 -->
+            <div class="comment-section">
+                <h3>댓글</h3>
+                <div>
+                    {{#comments}}
+                        <div class="comment">
+                            <div>
+                                <span>{{createdAt}}</span>
+                            </div>
+                            <div>
+                                {{#indents}}
+                                    <span>&gt;</span>
+                                {{/indents}}
+                                <span>{{content}}</span>
+                            </div>
+                            <div class="comment-actions">
+                                <button type="button" class="btn btn-primary btn-sm" onclick="showPopup('reply', {{id}})">답글</button>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="showPopup('edit', {{id}})">수정</button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteComment({{id}})">삭제</button>
+                            </div>
                         </div>
-                        <div class="comment-actions">
-                            <button type="button" class="btn btn-primary btn-sm comment-reply" onclick="showPopup('reply', {{id}})">답글</button>
-                            <button type="button" class="btn btn-secondary btn-sm comment-edit" onclick="showPopup('edit', {{id}})">수정</button>
-                            <button type="button" class="btn btn-danger btn-sm comment-delete" onclick="deleteComment({{id}})">삭제</button>
-                        </div>
-                    </div>
+                    {{/comments}}
                 </div>
-            {{/comments}}
-        </div>
-        <div class="comment-form">
-            <form action="{{boardItem.id}}/comment" method="post" name="commentForm">
-                <input type="hidden" name="reLevel" value="0">
-                <input type="hidden" name="id" value="-1">
-                <input type="hidden" name="rootId" value="{{boardItem.id}}">
-                <textarea class="comment-input" name="content" placeholder="댓글을 입력하세요..."></textarea>
-                <button type="submit" class="btn btn-primary comment-submit">댓글 작성</button>
-            </form>
-        </div>
-        <div id="commentPopup" class="comment-popup">
-            <div class="comment-popup-content">
-                <h4 id="popupTitle"></h4>
-                <textarea id="popupInput" rows="4" cols="50"></textarea>
-                <div class="popup-actions">
-                    <button type="button" class="btn btn-primary" onclick="submitPopup()">확인</button>
-                    <button type="button" class="btn btn-secondary" onclick="closePopup()">취소</button>
+                <div class="comment-form">
+                    <form action="{{boardItem.id}}/comment" method="post" name="commentForm">
+                        <input type="hidden" name="reLevel" value="0">
+                        <input type="hidden" name="id" value="-1">
+                        <input type="hidden" name="rootId" value="{{boardItem.id}}">
+                        <textarea class="form-control" name="content" placeholder="댓글을 입력하세요..."></textarea>
+                        <button type="submit" class="btn btn-primary">댓글 작성</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</body>
-</html>
+
+<div id="commentPopup" style="display: none;">
+    <div>
+        <h4 id="popupTitle"></h4>
+        <textarea id="popupInput" class="form-control" rows="4"></textarea>
+        <div>
+            <button type="button" class="btn btn-primary" onclick="submitPopup()">확인</button>
+            <button type="button" class="btn btn-secondary" onclick="closePopup()">취소</button>
+        </div>
+    </div>
+</div>
+<script>
+    const boardId = {{boardItem.id}};
+    let currentAction = '';
+    let currentCommentId = null;
+
+    function deletePost(id) {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            window.location.href = "delete/" + id;
+        }
+    }
+
+    function showPopup(action, commentId) {
+        currentAction = action;
+        currentCommentId = commentId;
+        const popup = document.getElementById('commentPopup');
+        const title = document.getElementById('popupTitle');
+        const input = document.getElementById('popupInput');
+
+        title.textContent = action === 'reply' ? '답글 작성' : '댓글 수정';
+        input.value = '';
+        popup.style.display = 'flex';
+    }
+
+    function closePopup() {
+        document.getElementById('commentPopup').style.display = 'none';
+    }
+
+    function submitPopup() {
+        const input = document.getElementById('popupInput');
+        const content = input.value.trim();
+        if (content) {
+            if (currentAction === 'reply') {
+                submitReply(currentCommentId, content);
+            } else if (currentAction === 'edit') {
+                submitEdit(currentCommentId, content);
+            }
+        }
+        closePopup();
+    }
+
+    function submitReply(parentId, content) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `${boardId}/comment`;
+        
+        const commentIdInput = document.createElement('input');
+        commentIdInput.type = 'hidden';
+        commentIdInput.name = 'parentId';
+        commentIdInput.value = parentId;
+
+        const contentInput = document.createElement('input');
+        contentInput.type = 'hidden';
+        contentInput.name = 'content';
+        contentInput.value = content;
+
+        form.appendChild(commentIdInput);
+        form.appendChild(contentInput);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function submitEdit(commentId, content) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `comment/update/${commentId}`;
+
+        const contentInput = document.createElement('input');
+        contentInput.type = 'hidden';
+        contentInput.name = 'content';
+        contentInput.value = content;
+
+        form.appendChild(contentInput);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function deleteComment(commentId) {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `comment/delete/${commentId}`;
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
+
+{{>layout/footer}}
