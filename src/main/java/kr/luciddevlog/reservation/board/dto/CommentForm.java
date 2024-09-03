@@ -1,6 +1,5 @@
 package kr.luciddevlog.reservation.board.dto;
 
-import kr.luciddevlog.reservation.user.dto.MemberInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

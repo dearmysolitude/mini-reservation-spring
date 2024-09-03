@@ -37,7 +37,7 @@ public class BoardItemWithAuthorName {
         this.rootId = rootId;
         this.viewCnt = viewCnt;
         this.writerName = writerName;
-        switch (category) {
+        switch (category) { //
             case NOTICE:
                 this.category = "notice";
                 break;

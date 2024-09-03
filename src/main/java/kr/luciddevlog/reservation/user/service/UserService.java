@@ -1,7 +1,7 @@
 package kr.luciddevlog.reservation.user.service;
 
-import kr.luciddevlog.reservation.user.dto.RegisterForm;
+import kr.luciddevlog.reservation.user.dto.RegisterFormDto;
 
 public interface UserService {
-    void register(RegisterForm form);
+    void register(RegisterFormDto form);
 }

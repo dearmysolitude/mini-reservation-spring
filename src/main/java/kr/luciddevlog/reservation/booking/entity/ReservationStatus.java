@@ -1,4 +1,4 @@
-package kr.luciddevlog.reservation.reservation.entity;
+package kr.luciddevlog.reservation.booking.entity;
 
 import kr.luciddevlog.reservation.common.enumConverterForJPA.AbstractCodedEnumConverter;
 import kr.luciddevlog.reservation.common.enumConverterForJPA.CodedEnum;

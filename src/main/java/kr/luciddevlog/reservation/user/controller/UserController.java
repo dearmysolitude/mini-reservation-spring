@@ -1,15 +1,9 @@
 package kr.luciddevlog.reservation.user.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import kr.luciddevlog.reservation.user.dto.LoginForm;
-import kr.luciddevlog.reservation.user.dto.MemberInfo;
-import kr.luciddevlog.reservation.user.dto.RegisterForm;
-import kr.luciddevlog.reservation.user.entity.UserItem;
-import kr.luciddevlog.reservation.user.exception.InvalidCredentialsException;
+import kr.luciddevlog.reservation.user.dto.RegisterFormDto;
 import kr.luciddevlog.reservation.user.exception.UserAlreadyExistsException;
-import kr.luciddevlog.reservation.user.exception.UserNotFoundException;
 import kr.luciddevlog.reservation.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -19,9 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -44,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String makeNewUser(@Valid @ModelAttribute RegisterForm form, BindingResult bindingResult, Model model){
+    public String makeNewUser(@Valid @ModelAttribute RegisterFormDto form, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors()
                     .stream()

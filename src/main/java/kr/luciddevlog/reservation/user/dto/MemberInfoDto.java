@@ -6,14 +6,14 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class MemberInfo {
+public class MemberInfoDto {
     private final Long id;
     private final String userName;
     private final LocalDateTime createdAt;
     private final String name;
     private final String phoneNumber;
 
-    public MemberInfo(UserItem member) {
+    public MemberInfoDto(UserItem member) {
         this.id = member.getId();
         this.name = member.getName();
         this.userName = member.getUsername();

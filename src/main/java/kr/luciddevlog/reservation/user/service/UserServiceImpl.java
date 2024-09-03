@@ -1,6 +1,6 @@
 package kr.luciddevlog.reservation.user.service;
 
-import kr.luciddevlog.reservation.user.dto.RegisterForm;
+import kr.luciddevlog.reservation.user.dto.RegisterFormDto;
 import kr.luciddevlog.reservation.user.entity.UserItem;
 import kr.luciddevlog.reservation.user.entity.UserRole;
 import kr.luciddevlog.reservation.user.exception.UserAlreadyExistsException;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
         return userItemRepository.findByPhoneNumber(phoneNumber) != null;
     }
 
-    public void register(RegisterForm form) {
+    public void register(RegisterFormDto form) {
         if(registered(form.getUsername())) {
             throw new UserAlreadyExistsException("이미 존재하는 ID입니다.");
         }

@@ -1,7 +1,6 @@
 package kr.luciddevlog.reservation.board.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import kr.luciddevlog.reservation.board.dto.BoardForm;
 import kr.luciddevlog.reservation.board.dto.BoardItemWithAuthorName;
 import kr.luciddevlog.reservation.board.dto.CommentForm;
@@ -11,10 +10,8 @@ import kr.luciddevlog.reservation.board.entity.BoardItem;
 import kr.luciddevlog.reservation.board.exception.BoardRequestFailException;
 import kr.luciddevlog.reservation.board.service.BoardService;
 import kr.luciddevlog.reservation.board.service.CommentService;
-import kr.luciddevlog.reservation.user.dto.MemberInfo;
 import kr.luciddevlog.reservation.user.entity.CustomUserDetails;
 import kr.luciddevlog.reservation.user.entity.UserItem;
-import kr.luciddevlog.reservation.user.exception.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +106,7 @@ public class BoardController {
     public String writeBoardItem(@ModelAttribute BoardForm insertForm, @AuthenticationPrincipal CustomUserDetails userDetails) {
         UserItem userItem = userDetails.getUserItem();
 
-        logger.info("Received BoardForm: {}", insertForm);
+        logger.info("Received BoardForm: {}", insertForm); // Debugging 중
 
         BoardItem board = boardService.createBoard(insertForm, userItem.getId());
         if(board == null) {
@@ -140,7 +137,7 @@ public class BoardController {
             throw new BoardRequestFailException("해당 게시글을 찾을 수 없습니다.");
         }
 
-        if (!userDetails.getUserItem().isAdmin() && !Objects.equals(userDetails.getUserItem().getId(), item.getWriter().getId())) {
+        if (userDetails.getUserItem().isAdmin() && !Objects.equals(userDetails.getUserItem().getId(), item.getWriter().getId())) {
             throw new AccessDeniedException("관리자 혹은 작성자만 수정할 수 있습니다.");
         }
         model.addAttribute("boardItem", item);
@@ -159,13 +156,10 @@ public class BoardController {
             throw new AccessDeniedException("로그인이 필요합니다.");
         }
         UserItem userItem = userDetails.getUserItem();
-        if(!userDetails.getUserItem().isAdmin() && !Objects.equals(userItem.getId(), boardService.getBoardItem(id).getWriter().getId())) {
+        if(userDetails.getUserItem().isAdmin() && !Objects.equals(userItem.getId(), boardService.getBoardItem(id).getWriter().getId())) {
             throw new AccessDeniedException("작성자만 수정할 수 있습니다.");
         }
-
-        // 리디렉션 주소
-        BoardItem boardItem = boardService.getBoardItem(id);
-
+        
         boardService.deleteBoardItem(id);
         return "redirect:/board/" + category + "/list";
     }
@@ -193,7 +187,7 @@ public class BoardController {
 
         UserItem userItem = userDetails.getUserItem();
 
-        if(!userDetails.getUserItem().isAdmin() && !Objects.equals(userItem.getId(), commentService.getCommentInfo(commentId).getWriter().getId())) {
+        if(userDetails.getUserItem().isAdmin() && !Objects.equals(userItem.getId(), commentService.getCommentInfo(commentId).getWriter().getId())) {
             throw new AccessDeniedException("작성자만 삭제할 수 있습니다.");
         }
 
@@ -211,7 +205,7 @@ public class BoardController {
 
         UserItem userItem = userDetails.getUserItem();
 
-        if(!userDetails.getUserItem().isAdmin() && !Objects.equals(userItem.getId(), commentService.getCommentInfo(commentId).getWriter().getId())) {
+        if(userDetails.getUserItem().isAdmin() && !Objects.equals(userItem.getId(), commentService.getCommentInfo(commentId).getWriter().getId())) {
             throw new AccessDeniedException("작성자만 수정할 수 있습니다.");
         }
 

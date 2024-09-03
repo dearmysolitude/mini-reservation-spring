@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 public class UserDto {
     private Long userId;
     private String username;
+    private String phoneNumber;
 
     public static UserDto of(UserItem userItem) {
-        return new UserDto(userItem.getId(), userItem.getUsername());
+        return new UserDto(userItem.getId(), userItem.getUsername(), userItem.getPhoneNumber());
     }
 }

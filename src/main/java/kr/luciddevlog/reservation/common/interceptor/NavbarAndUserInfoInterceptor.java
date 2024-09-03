@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.luciddevlog.reservation.common.entity.NavItem;
 import kr.luciddevlog.reservation.common.entity.SubItem;
-import kr.luciddevlog.reservation.user.dto.MemberInfo;
+import kr.luciddevlog.reservation.user.dto.MemberInfoDto;
 import kr.luciddevlog.reservation.user.entity.CustomUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +27,7 @@ public class NavbarAndUserInfoInterceptor implements HandlerInterceptor {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth != null && auth.getPrincipal() instanceof CustomUserDetails) {
                 CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
-                modelAndView.addObject("user", new MemberInfo(userDetails.getUserItem()));
+                modelAndView.addObject("user", new MemberInfoDto(userDetails.getUserItem()));
             }
         }
     }
@@ -38,7 +38,8 @@ public class NavbarAndUserInfoInterceptor implements HandlerInterceptor {
                 new NavItem("리조트 소개", Arrays.asList(
                         new SubItem("조아리조트", "/reservation/"), // Controller 로 연결, reservation은 프로젝트이름
                         new SubItem("vip룸", "/reservation/vip"),
-                        new SubItem("delux룸", "/reservation/deluxe")
+                        new SubItem("디럭스 스위트룸", "/reservation/deluxe"),
+                        new SubItem("오션뷰 일반룸", "/reservation/oceanview")
                 )),
                 new NavItem("찾아오기", List.of(
                         new SubItem("찾아오는 길", "/reservation/location")

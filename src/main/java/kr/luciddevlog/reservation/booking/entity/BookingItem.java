@@ -1,4 +1,4 @@
-package kr.luciddevlog.reservation.reservation.entity;
+package kr.luciddevlog.reservation.booking.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class ReservationItem {
+public class BookingItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,12 +46,6 @@ public class ReservationItem {
 
     @Column(length = 600)
     private String memo;
-
-    @Column
-    private String inName;
-
-    @Column(nullable = false)
-    private String telNum;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)

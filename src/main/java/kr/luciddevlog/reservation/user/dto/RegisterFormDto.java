@@ -2,7 +2,6 @@ package kr.luciddevlog.reservation.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import kr.luciddevlog.reservation.user.entity.UserItem;
 import kr.luciddevlog.reservation.user.entity.UserRole;
 import lombok.Builder;
@@ -14,7 +13,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RegisterForm {
+public class RegisterFormDto {
     @NotBlank(message = "아이디를 입력해 주세요.")
     @Length(min = 4, max = 20, message = "아이디는 4자에서 20자 사이여야 합니다.")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "아이디는 영문자와 숫자만 사용 가능합니다.")
@@ -36,7 +35,7 @@ public class RegisterForm {
 
     private UserRole role;
 
-    public RegisterForm(String username, String password, String phoneNumber, String name) {
+    public RegisterFormDto(String username, String password, String phoneNumber, String name) {
         this.username = username;
         this.password = password;
         this.phoneNumber = phoneNumber;
