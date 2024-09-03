@@ -173,7 +173,7 @@ public class BoardController {
     }
 
     @PostMapping("{boardId}/comment")
-    public String addComment(@Valid @ModelAttribute CommentForm commentForm,
+    public String addComment(@ModelAttribute CommentForm commentForm,
                              @PathVariable("boardId") Long boardId,
                              @AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails == null || userDetails.getUserItem() == null) {

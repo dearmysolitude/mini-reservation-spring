@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CommentForm {
     private String content;
-    private int reLevel;
+    private Integer reLevel;
     private Long rootId; // 댓글이 달리느 ㄴ게시글
     private Long memberId; // 게시글을 다는 멤버의 아이디
     private Long parentId; // 원본 댓글

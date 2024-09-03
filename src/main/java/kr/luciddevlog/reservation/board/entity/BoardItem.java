@@ -110,8 +110,10 @@ public class BoardItem {
             }
         }
 
-        if (rootId == null && (title == null || title.isEmpty())) {
-            throw new IllegalStateException("게시글은 제목이 비어있을 수 없습니다.");
+        if(rootId == null) {
+            if(title == null || title.isEmpty()) {
+                throw new IllegalStateException("게시글은 제목이 비어있을 수 없습니다.");
+            }
         }
     }
 

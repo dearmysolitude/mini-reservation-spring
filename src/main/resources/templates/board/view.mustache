@@ -53,13 +53,23 @@
     .comment {
         border-bottom: 1px solid #eee;
         padding: 10px 0;
+        text-align: left;
+    }
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+    .comment-content {
+        margin-left: 20px;
+    }
+    .comment-actions {
+        text-align: right;
+        margin-top: 5px;
     }
     .comment-form textarea {
         width: 100%;
         margin-bottom: 10px;
-    }
-    .comment-actions {
-        text-align: right;
     }
 </style>
 
@@ -96,42 +106,44 @@
             </div>
             {{^boardItem.isNotice}}
             <!-- 댓글 섹션 -->
-            <div class="comment-section">
-                <h3>댓글</h3>
-                <div>
-                    {{#commentItems}}
-                        <div class="comment">
-                            <div>
-                                <span>{{createdAt}}</span>
+                <div class="comment-section">
+                    <h3>댓글</h3>
+                    <div>
+                        {{#commentItems}}
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <span>{{writerName}}</span>
+                                    <span>{{createdAt}}</span>
+                                </div>
+                                <div class="comment-content">
+                                    {{#indents}}
+                                        <span>&gt;</span>
+                                    {{/indents}}
+                                    <span>{{content}}</span>
+                                </div>
+                                <div class="comment-actions">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="showPopup('reply', {{id}})">답글</button>
+                                    {{#isMine}}
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="showPopup('edit', {{id}})">수정</button>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteComment({{id}})">삭제</button>
+                                    {{/isMine}}
+                                </div>
                             </div>
-                            <div>
-                                {{#indents}}
-                                    <span>&gt;</span>
-                                {{/indents}}
-                                <span>{{content}}</span>
-                            </div>
-                            <div class="comment-actions">
-                                <button type="button" class="btn btn-primary btn-sm" onclick="showPopup('reply', {{id}})">답글</button>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="showPopup('edit', {{id}})">수정</button>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteComment({{id}})">삭제</button>
-                            </div>
-                        </div>
-                    {{/commentItems}}
+                        {{/commentItems}}
+                    </div>
+                    <div class="comment-form">
+                        <form action="{{boardItem.id}}/comment" method="post" name="commentForm">
+                            <input type="hidden" name="reLevel" value="0">
+                            <input type="hidden" name="parentId" value="-1">
+                            <input type="hidden" name="rootId" value="{{boardItem.id}}">
+                            <textarea class="form-control" name="content" placeholder="댓글을 입력하세요..."></textarea>
+                            <button type="submit" class="btn btn-primary">댓글 작성</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="comment-form">
-                    <form action="{{boardItem.id}}/comment" method="post" name="commentForm">
-                        <input type="hidden" name="reLevel" value="0">
-                        <input type="hidden" name="parentId" value="-1">
-                        <input type="hidden" name="rootId" value="{{boardItem.id}}">
-                        <textarea class="form-control" name="content" placeholder="댓글을 입력하세요..."></textarea>
-                        <button type="submit" class="btn btn-primary">댓글 작성</button>
-                    </form>
-                </div>
-            </div>
             {{/boardItem.isNotice}}
         </div>
     </div>
-</div>
 
 <div id="commentPopup" style="display: none;">
     <div>
@@ -175,7 +187,7 @@
         const content = input.value.trim();
         if (content) {
             if (currentAction === 'reply') {
-                submitReply(currentCommentId, content);
+                submitReply(currentCommentId, content, boardId);
             } else if (currentAction === 'edit') {
                 submitEdit(currentCommentId, content);
             }
@@ -183,27 +195,39 @@
         closePopup();
     }
 
-    function submitReply(parentId, content) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = `${boardId}/comment`;
-        
-        const commentIdInput = document.createElement('input');
-        commentIdInput.type = 'hidden';
-        commentIdInput.name = 'parentId';
-        commentIdInput.value = parentId;
+function submitReply(parentId, content, boardId) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `${boardId}/comment`;
 
-        const contentInput = document.createElement('input');
-        contentInput.type = 'hidden';
-        contentInput.name = 'content';
-        contentInput.value = content;
+    const reLevelInput = document.createElement('input');
+    reLevelInput.type = 'hidden';
+    reLevelInput.name = 'reLevel';
+    reLevelInput.value = '0';  // 대댓글의 경우 이 값을 조정해야
 
-        form.appendChild(commentIdInput);
-        form.appendChild(contentInput);
-        document.body.appendChild(form);
-        form.submit();
-    }
+    const parentIdInput = document.createElement('input');
+    parentIdInput.type = 'hidden';
+    parentIdInput.name = 'parentId';
+    parentIdInput.value = parentId;
 
+    const rootIdInput = document.createElement('input');
+    rootIdInput.type = 'hidden';
+    rootIdInput.name = 'rootId';
+    rootIdInput.value = boardId;  // boardId를 rootId로 사용
+
+    const contentInput = document.createElement('input');
+    contentInput.type = 'hidden';
+    contentInput.name = 'content';
+    contentInput.value = content;
+
+    form.appendChild(reLevelInput);
+    form.appendChild(parentIdInput);
+    form.appendChild(rootIdInput);
+    form.appendChild(contentInput);
+
+    document.body.appendChild(form);
+    form.submit();
+}
     function submitEdit(commentId, content) {
         const form = document.createElement('form');
         form.method = 'POST';

@@ -49,11 +49,11 @@ SET @review_id = 30;
 -- 댓글 삽입 및 부모 게시글의 re_cnt 업데이트
 INSERT INTO board_items (writer_id, content, createdAt, updatedAt, category, root_id, re_cnt, re_level, score)
 VALUES
-(1, '댓글 내용 1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 0, 1, NULL),
-(1, '댓글 내용 2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 0, 1, NULL),
-(1, '댓글 내용 3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 0, 1, NULL),
-(1, '댓글 내용 4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 0, 1, NULL),
-(1, '댓글 내용 5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 0, 1, NULL);
+(1, '댓글 내용 1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 1, 1, NULL),
+(1, '댓글 내용 2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 1, 1, NULL),
+(1, '댓글 내용 3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 1, 1, NULL),
+(1, '댓글 내용 4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 1, 1, NULL),
+(1, '댓글 내용 5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 1, 1, NULL);
 
 -- RoomItem 테이블에 두 개의 방 데이터 삽입
 INSERT INTO RoomItem (price, description, name) VALUES
