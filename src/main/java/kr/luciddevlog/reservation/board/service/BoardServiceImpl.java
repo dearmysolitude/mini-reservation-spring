@@ -6,6 +6,7 @@ import kr.luciddevlog.reservation.board.dto.BoardItemWithAuthorName;
 import kr.luciddevlog.reservation.board.dto.Pagination;
 import kr.luciddevlog.reservation.board.entity.BoardCategory;
 import kr.luciddevlog.reservation.board.entity.BoardItem;
+import kr.luciddevlog.reservation.board.exception.BoardNotFoundException;
 import kr.luciddevlog.reservation.board.exception.BoardRequestFailException;
 import kr.luciddevlog.reservation.board.repository.BoardItemRepository;
 import kr.luciddevlog.reservation.board.repository.CommentRepository;
@@ -67,9 +68,18 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	public BoardItemWithAuthorName showSingleContent(Long id, Long userId) {
-		BoardItemWithAuthorName boardItemWithAuthorName = boardItemRepository.findBoardItemByIdWithUserName(id);
-        return new BoardDto(boardItemWithAuthorName, userId);
-    }
+		BoardItemWithAuthorName boardItem = boardItemRepository.findBoardItemByIdWithUserName(id);
+		if (boardItem == null) {
+			throw new BoardNotFoundException("Board not found with id: " + id);
+		}
+
+		if (userId != null) {
+			return new BoardDto(boardItem, userId);
+		} else {
+			return boardItem;
+		}
+
+	}
 	 
 	/* 테스트케이스
 	1. 10 -1 -> 0 0 11 53  // 0 값은 출력하지 않을 때 만든다.

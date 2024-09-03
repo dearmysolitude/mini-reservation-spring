@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 // Refactor: QueryDSL로 변경
 @Repository
 public interface BoardItemRepository extends JpaRepository<BoardItem, Long>, BoardItemRepositoryCustom {
-    Long countByRootId(Long rootId);
     Long countByCategoryAndRootIdIsNull(BoardCategory boardCategory);
 
     @Modifying

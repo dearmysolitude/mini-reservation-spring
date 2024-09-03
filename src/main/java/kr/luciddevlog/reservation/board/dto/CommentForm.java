@@ -12,7 +12,7 @@ public class CommentForm {
     private int reLevel;
     private Long rootId; // 댓글이 달리느 ㄴ게시글
     private Long memberId; // 게시글을 다는 멤버의 아이디
-    private Long id; // 원본 댓글
+    private Long parentId; // 원본 댓글
 
     public void addMember(Long id) {
         this.memberId = id;

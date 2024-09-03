@@ -121,7 +121,7 @@
                 <div class="comment-form">
                     <form action="{{boardItem.id}}/comment" method="post" name="commentForm">
                         <input type="hidden" name="reLevel" value="0">
-                        <input type="hidden" name="id" value="-1">
+                        <input type="hidden" name="parentId" value="-1">
                         <input type="hidden" name="rootId" value="{{boardItem.id}}">
                         <textarea class="form-control" name="content" placeholder="댓글을 입력하세요..."></textarea>
                         <button type="submit" class="btn btn-primary">댓글 작성</button>

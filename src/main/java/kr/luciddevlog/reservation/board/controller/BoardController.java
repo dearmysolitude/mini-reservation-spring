@@ -1,6 +1,7 @@
 package kr.luciddevlog.reservation.board.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import kr.luciddevlog.reservation.board.dto.BoardForm;
 import kr.luciddevlog.reservation.board.dto.BoardItemWithAuthorName;
 import kr.luciddevlog.reservation.board.dto.CommentForm;
@@ -90,8 +91,12 @@ public class BoardController {
     @GetMapping("{id}")
     public String getSingleBoard(@PathVariable Long id, Model model, HttpServletRequest request,
                                  @AuthenticationPrincipal CustomUserDetails userDetails) {
-        UserItem userItem = userDetails.getUserItem();
-        BoardItemWithAuthorName b = boardService.showSingleContent(id, userItem.getId());
+        Long userId = null;
+        if (userDetails != null) {
+            userId = userDetails.getUserItem().getId();
+        }
+
+        BoardItemWithAuthorName b = boardService.showSingleContent(id, userId);
         model.addAttribute("boardItem", b);
         boardService.updateViewCount(id);
 
@@ -168,7 +173,7 @@ public class BoardController {
     }
 
     @PostMapping("{boardId}/comment")
-    public String addComment(@ModelAttribute CommentForm commentForm,
+    public String addComment(@Valid @ModelAttribute CommentForm commentForm,
                              @PathVariable("boardId") Long boardId,
                              @AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails == null || userDetails.getUserItem() == null) {

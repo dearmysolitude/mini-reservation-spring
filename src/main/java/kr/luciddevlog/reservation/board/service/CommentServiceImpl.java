@@ -30,16 +30,16 @@ public class CommentServiceImpl implements CommentService{
     public void createComment(CommentForm commentForm) {
         String content = commentForm.getContent();
         Long rootId = commentForm.getRootId();
-        Long id = commentForm.getId();
+        Long parentId = commentForm.getParentId();
         UserItem member = memberRepository.findById(commentForm.getMemberId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 유저가 존재하지 않음")
         );
 
-        if(content == null || id == null) {
+        if(content == null || rootId == null) {
             throw new IllegalArgumentException("인자가 잘못 전달됨");
         }
 
-        if(id == -1) { // 새 코멘트 작성
+        if(parentId == -1) { // 새 코멘트 작성
             BoardItem comment = BoardItem.builder()
                     .content(content)
                     .writer(member)
@@ -49,7 +49,7 @@ public class CommentServiceImpl implements CommentService{
             commentRepository.save(comment);
             return;
         }
-        createSubComment(id, content, member);
+        createSubComment(parentId, content, member);
     }
 
     private BoardItem createSubComment(Long id, String content, UserItem member) { // 들어오는 id는 답글 달 댓글의 id

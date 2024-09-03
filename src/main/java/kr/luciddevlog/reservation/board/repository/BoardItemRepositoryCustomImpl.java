@@ -71,10 +71,11 @@ public class BoardItemRepositoryCustomImpl implements BoardItemRepositoryCustom{
                         userItem.id,
                         userItem.name,
                         boardItem.category
-                        ))
+                ))
                 .from(boardItem)
                 .leftJoin(boardItem.writer, userItem)
                 .where(boardItem.id.eq(id))
                 .fetchOne();
     }
+
 }
