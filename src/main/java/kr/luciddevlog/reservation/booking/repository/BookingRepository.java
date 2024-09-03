@@ -8,6 +8,4 @@ import java.time.LocalDate;
 
 @Repository
 public interface BookingRepository extends JpaRepository<BookingItem, Long> , BookingRepositoryCustom{
-    long countByRoomItemIdAndCheckInDateLessThanEqualAndCheckOutDateGreaterThan(
-            Long roomId, LocalDate bookingDate, LocalDate bookingDatePlusOne);
 }

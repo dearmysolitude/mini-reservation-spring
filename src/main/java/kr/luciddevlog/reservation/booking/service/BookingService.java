@@ -10,6 +10,6 @@ public interface BookingService {
     RoomsAndMemberDto deliverBookingForm(Long roomId);
     boolean makeReservation(BookingFormDto form);
 
-    List<BookingInfoDto> bookingInfoListByMemberId(Long memberId);
-    BookingInfoDto showBookingInfo(Long reservationId);
+//    List<BookingInfoDto> bookingInfoListByMemberId(Long memberId);
+//    BookingInfoDto showBookingInfo(Long reservationId);
 }
