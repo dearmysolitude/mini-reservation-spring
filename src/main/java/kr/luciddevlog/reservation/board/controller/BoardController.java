@@ -23,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("board")
@@ -87,28 +88,30 @@ public class BoardController {
     }
 
     @GetMapping("{id}")
-    public String getSingleBoard(@PathVariable Long id, Model model, HttpServletRequest request) {
-        BoardItemWithAuthorName b = boardService.showSingleContent(id);
+    public String getSingleBoard(@PathVariable Long id, Model model, HttpServletRequest request,
+                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
+        UserItem userItem = userDetails.getUserItem();
+        BoardItemWithAuthorName b = boardService.showSingleContent(id, userItem.getId());
         model.addAttribute("boardItem", b);
         boardService.updateViewCount(id);
 
-        List<BoardItem> comments = commentService.showContent(id);
-        model.addAttribute("comments", comments);
-
+        if(!(b.getCategory() == (BoardCategory.NOTICE))) {
+            List<BoardItem> comments = commentService.showContent(id);
+            model.addAttribute("commentItems", comments);
+        }
         // 세션에서 목록 페이지 URL 가져오기
         String listUrl = (String) request.getSession().getAttribute("boardListUrl");
         model.addAttribute("listUrl", listUrl != null ? listUrl : "/reservation/board/notice/list");
-
         return "board/view";
     }
 
     @PostMapping("write")
-    public String writeBoardItem(@ModelAttribute BoardForm insertForm, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public String writeBoardItem(@ModelAttribute BoardForm insertForm, @AuthenticationPrincipal CustomUserDetails userDetails,
+                                 HttpServletRequest request) {
         UserItem userItem = userDetails.getUserItem();
 
-        logger.info("Received BoardForm: {}", insertForm); // Debugging 중
-
         BoardItem board = boardService.createBoard(insertForm, userItem.getId());
+
         if(board == null) {
             throw new BoardRequestFailException("요청 실패: 새 글이 업데이트 되지 않음");
         }
@@ -124,7 +127,7 @@ public class BoardController {
         UserItem userItem = userDetails.getUserItem();
 
         insertForm.addAuthor(userItem);
-        insertForm.addCategory(category);
+        insertForm.setCategory(category);
         model.addAttribute("insertForm", insertForm);
         return "board/insert";
     }

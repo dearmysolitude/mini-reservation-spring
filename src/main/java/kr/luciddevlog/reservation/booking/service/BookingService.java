@@ -6,8 +6,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingService {
-    List<RoomDailyStatusDto> showMonthlySchedule(LocalDate from);
-    RoomsAndMemberDto deliverBookingForm(Long roomId);
+    List<RoomDailyStatusDto> makeMonthlySchedule();
+    RoomsAndMemberDto deliverBookingForm();
     boolean makeReservation(BookingFormDto form);
 
 //    List<BookingInfoDto> bookingInfoListByMemberId(Long memberId);

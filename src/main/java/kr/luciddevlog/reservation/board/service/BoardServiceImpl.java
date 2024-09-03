@@ -1,5 +1,6 @@
 package kr.luciddevlog.reservation.board.service;
 
+import kr.luciddevlog.reservation.board.dto.BoardDto;
 import kr.luciddevlog.reservation.board.dto.BoardForm;
 import kr.luciddevlog.reservation.board.dto.BoardItemWithAuthorName;
 import kr.luciddevlog.reservation.board.dto.Pagination;
@@ -65,8 +66,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardItemRepository.findBoardItemsByCategory(boardCategory, pageRequest);
 	}
 
-	public BoardItemWithAuthorName showSingleContent(Long id) {
-        return boardItemRepository.findBoardItemById(id);
+	public BoardItemWithAuthorName showSingleContent(Long id, Long userId) {
+		BoardItemWithAuthorName boardItemWithAuthorName = boardItemRepository.findBoardItemByIdWithUserName(id);
+        return new BoardDto(boardItemWithAuthorName, userId);
     }
 	 
 	/* 테스트케이스
@@ -177,7 +179,7 @@ public BoardItem createBoard(BoardForm boardForm, Long memberId) {
 				.writer(member)
 				.category(boardForm.getCategory())
 				.rootId(boardForm.getRootId())
-				.rootId(boardForm.getRootId())
+				.viewCnt(0)
 				.build();
 		return boardItemRepository.save(board);
 	}
@@ -221,4 +223,5 @@ public BoardItem createBoard(BoardForm boardForm, Long memberId) {
 		}
         return boardItemRepository.findById(id).orElse(null);
 	}
+
 }

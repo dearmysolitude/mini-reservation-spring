@@ -38,6 +38,7 @@ public class BoardItemRepositoryCustomImpl implements BoardItemRepositoryCustom{
                         boardItem.reCnt,
                         boardItem.rootId,
                         boardItem.viewCnt,
+                        userItem.id,
                         userItem.name,
                         boardItem.category
                         ))
@@ -55,7 +56,7 @@ public class BoardItemRepositoryCustomImpl implements BoardItemRepositoryCustom{
 
         return new PageImpl<>(content, pageable, total);    }
 
-    public BoardItemWithAuthorName findBoardItemById(Long id) {
+    public BoardItemWithAuthorName findBoardItemByIdWithUserName(Long id) {
         return jpaQueryFactory
                 .select(Projections.constructor(BoardItemWithAuthorName.class,
                         boardItem.id,
@@ -67,6 +68,7 @@ public class BoardItemRepositoryCustomImpl implements BoardItemRepositoryCustom{
                         boardItem.reCnt,
                         boardItem.rootId,
                         boardItem.viewCnt,
+                        userItem.id,
                         userItem.name,
                         boardItem.category
                         ))

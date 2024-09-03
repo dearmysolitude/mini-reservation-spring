@@ -7,8 +7,23 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardDto {
-    private String title;
-    private String content;
-    private Long boardId;
+public class BoardDto extends BoardItemWithAuthorName{
+    private boolean mine;
+
+    public BoardDto(BoardItemWithAuthorName boardItemWithAuthorName, Long userId) {
+        super(boardItemWithAuthorName.getId(),
+                boardItemWithAuthorName.getTitle(),
+                boardItemWithAuthorName.getContent(),
+                boardItemWithAuthorName.getCreatedAt(),
+                boardItemWithAuthorName.getUpdatedAt(),
+                boardItemWithAuthorName.getReLevel(),
+                boardItemWithAuthorName.getReCnt(),
+                boardItemWithAuthorName.getRootId(),
+                boardItemWithAuthorName.getViewCnt(),
+                boardItemWithAuthorName.getWriterId(),
+                boardItemWithAuthorName.getWriterName(),
+                boardItemWithAuthorName.getCategory());
+
+        this.mine = userId != null && userId.equals(boardItemWithAuthorName.getWriterId());
+    }
 }

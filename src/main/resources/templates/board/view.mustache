@@ -89,15 +89,17 @@
             </table>
             <div class="board-buttons">
                 <button class="btn btn-secondary" onClick="location.href='{{listUrl}}'">목록</button>
+                {{#boardItem.mine}}
                 <button class="btn btn-primary" onClick="location.href='{{boardItem.category}}/update?id={{boardItem.id}}'">수정</button>
                 <button type="button" class="btn btn-danger" onclick="deletePost('{{boardItem.category}}', '{{boardItem.id}}')">삭제</button>
+                {{/boardItem.mine}}
             </div>
-
+            {{^boardItem.isNotice}}
             <!-- 댓글 섹션 -->
             <div class="comment-section">
                 <h3>댓글</h3>
                 <div>
-                    {{#comments}}
+                    {{#commentItems}}
                         <div class="comment">
                             <div>
                                 <span>{{createdAt}}</span>
@@ -114,7 +116,7 @@
                                 <button type="button" class="btn btn-danger btn-sm" onclick="deleteComment({{id}})">삭제</button>
                             </div>
                         </div>
-                    {{/comments}}
+                    {{/commentItems}}
                 </div>
                 <div class="comment-form">
                     <form action="{{boardItem.id}}/comment" method="post" name="commentForm">
@@ -126,6 +128,7 @@
                     </form>
                 </div>
             </div>
+            {{/boardItem.isNotice}}
         </div>
     </div>
 </div>

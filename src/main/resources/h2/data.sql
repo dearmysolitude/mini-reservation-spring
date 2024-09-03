@@ -56,9 +56,9 @@ VALUES
 (1, '댓글 내용 5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, @review_id, 0, 1, NULL);
 
 -- RoomItem 테이블에 두 개의 방 데이터 삽입
-INSERT INTO RoomItem (price, introduce, name) VALUES
+INSERT INTO RoomItem (price, description, name) VALUES
 (700000, '아름다운 전망과 편안한 분위기의 더블룸입니다. 커플이나 비즈니스 여행객에게 적합합니다.', 'VIP룸'),
-(350000, '넓은 공간과 고급스러운 인테리어의 스위트룸입니다. 가족이나 그룹 여행객에게 이상적입니다.', '디럭스 스위트룸');
+(350000, '넓은 공간과 고급스러운 인테리어의 스위트룸입니다. 가족이나 그룹 여행객에게 이상적입니다.', '디럭스 스위트룸'),
 (100000, '탁 트인 바다뷰를 가지고 있는 일반룸입니다. 가족이나 그룹 여행객에게 이상적입니다.', '오션뷰 일반룸');
 
 INSERT INTO BookingItem (user_id, room_id, checkInDate, checkOutDate, people, status, createdAt, updatedAt) VALUES

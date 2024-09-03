@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface BoardItemRepositoryCustom {
     Page<BoardItemWithAuthorName> findBoardItemsByCategory(BoardCategory category, Pageable pageable);
-    BoardItemWithAuthorName findBoardItemById(Long id);
+    BoardItemWithAuthorName findBoardItemByIdWithUserName(Long id);
 }

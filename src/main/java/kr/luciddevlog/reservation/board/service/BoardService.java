@@ -13,7 +13,7 @@ public interface BoardService {
 	Pagination makePageInfo(BoardCategory boardCategory, int sizePerPage, int currentPage);
 
 	// 게시글 crud
-	BoardItemWithAuthorName showSingleContent(Long id);
+	BoardItemWithAuthorName showSingleContent(Long id, Long userId);
 	BoardItem createBoard(BoardForm boardForm, Long memberId);
 	void updateBoardItem(Long id, BoardForm form);
 	void deleteBoardItem(Long id);
