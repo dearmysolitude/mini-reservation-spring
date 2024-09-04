@@ -9,7 +9,7 @@ import java.util.List;
 public interface BookingService {
     List<RoomDailyStatusDto> makeMonthlySchedule();
     RoomAndMemberDto deliverBookingForm(Long roomId, UserItem userItem);
-    boolean makeReservation(BookingFormDto form);
+    void makeReservation(BookingFormDto form);
     PriceDto makePriceResponse(PriceRequestDto priceRequestDto);
     List<RoomDailyStatusDto> getBookedDatesForRoom(Long roomId, LocalDate date);
     LocalDate getFastestBookedDateForRoom(Long roomId, LocalDate date);

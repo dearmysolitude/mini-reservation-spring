@@ -1,5 +1,6 @@
 package kr.luciddevlog.reservation.booking.dto;
 
+import kr.luciddevlog.reservation.booking.entity.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,4 +17,5 @@ public class BookingFormDto {
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private Integer people;
+    private ReservationStatus status;
 }

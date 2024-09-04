@@ -3,6 +3,8 @@ package kr.luciddevlog.reservation.booking.controller;
 import kr.luciddevlog.reservation.booking.dto.*;
 import kr.luciddevlog.reservation.booking.service.BookingService;
 import kr.luciddevlog.reservation.user.entity.CustomUserDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +23,7 @@ public class BookingController {
     public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
+    private static final Logger logger = LoggerFactory.getLogger(BookingController.class);
 
     @GetMapping("month")
     public String monthStatusPage(Model model) {
@@ -55,8 +58,8 @@ public class BookingController {
         return ResponseEntity.ok(response);
     }
     @PostMapping("booking")
-    public void booking(@RequestBody Long roomId, @RequestBody LocalDate checkInDate, @RequestBody String memo, @RequestBody Integer people,
-                        @RequestBody LocalDate checkOutDate, @AuthenticationPrincipal CustomUserDetails userDetails){
+    public String booking(@RequestParam Long roomId, @RequestParam LocalDate checkInDate, @RequestParam String memo, @RequestParam Integer people,
+                        @RequestParam LocalDate checkOutDate, @AuthenticationPrincipal CustomUserDetails userDetails){
         BookingFormDto form = BookingFormDto.builder()
                 .roomId(roomId)
                 .userId(userDetails.getUserItem().getId())
@@ -65,6 +68,14 @@ public class BookingController {
                 .checkOutDate(checkOutDate)
                 .people(people)
                 .build();
-        bookingService.makeReservation(form);
+        logger.info("Received booking request: {}", form);
+        try {
+            bookingService.makeReservation(form);
+            logger.info("Booking successful for: {}", form);
+            return "redirect:/month";
+        } catch (Exception e) {
+            logger.error("Booking failed for: {}. Error: {}", form, e.getMessage());
+            throw e;
+        }
     }
 }

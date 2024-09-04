@@ -2,6 +2,7 @@ package kr.luciddevlog.reservation.booking.service;
 
 import kr.luciddevlog.reservation.booking.dto.*;
 import kr.luciddevlog.reservation.booking.entity.BookingItem;
+import kr.luciddevlog.reservation.booking.entity.ReservationStatus;
 import kr.luciddevlog.reservation.booking.repository.BookingRepository;
 import kr.luciddevlog.reservation.booking.repository.RoomRepository;
 import kr.luciddevlog.reservation.user.dto.UserDto;
@@ -71,16 +72,13 @@ public class BookingServiceImpl implements BookingService{
         return new RoomAndMemberDto(UserDto.of(userItem), RoomInfoDto.of(roomRepository.findById(roomId).orElseThrow()));
     }
 
-    public boolean makeReservation(BookingFormDto form) {
-
-
+    public void makeReservation(BookingFormDto form) {
         BookingItem bookingItem = formToBookingItem(form);
         try {
             bookingRepository.save(bookingItem);
-            return true;
         } catch (Exception e) {
             // 로그 저장
-            return false;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -92,6 +90,7 @@ public class BookingServiceImpl implements BookingService{
                 .checkInDate(form.getCheckInDate())
                 .checkOutDate(form.getCheckOutDate())
                 .people(form.getPeople())
+                .status(ReservationStatus.BEFORE_DEPOSIT)
                 .build();
     }
 
