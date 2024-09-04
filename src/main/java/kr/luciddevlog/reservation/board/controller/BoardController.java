@@ -46,7 +46,6 @@ public class BoardController {
         } else {
             whatCategory = BoardCategory.REVIEW;
         }
-        System.out.println("현재 default page: "+ page);
         Page<BoardItemWithAuthorName> boardList = boardService.searchContents(whatCategory, pageSize, page);
         Pagination pageInfo = boardService.makePageInfo(whatCategory, pageSize, page);
 

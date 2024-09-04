@@ -1,0 +1,149 @@
+{{>layout/header}}
+<div class="main-container mt-5">
+    <h1>호텔 예약</h1>
+    <form id="bookingForm" action="/reservation/booking" method="post">
+        {{#rooms}}
+            <input type="hidden" name="roomId" value="{{roomId}}">
+        {{/rooms}}
+        <input type="hidden" name="checkInDate" value="{{checkInDate}}">
+        <input type="hidden" id="fastestBookedDate" value="{{fastestBookedDate}}">
+
+        <div class="form-group">
+            <label>고객명:</label>
+            <input type="text" class="form-control" value="{{user.name}}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>전화번호:</label>
+            <input type="text" class="form-control" value="{{user.phoneNumber}}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label>체크인 날짜:</label>
+            <input type="date" class="form-control" value="{{checkInDate}}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="checkOutDate">체크아웃 날짜:</label>
+            <input type="date" id="checkOutDate" name="checkOutDate" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="guestCount">인원 수 (최대 4명):</label>
+            <input type="number" id="guestCount" name="guestCount" class="form-control" required min="1" max="4">
+        </div>
+
+        <div class="form-group">
+            <label for="memo">메모:</label>
+            <textarea id="memo" name="memo" class="form-control" rows="3"></textarea>
+        </div>
+
+        {{#rooms}}
+            <div class="form-group">
+                <label>방 이름:</label>
+                <input type="text" class="form-control" value="{{name}}" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>방 설명:</label>
+                <textarea class="form-control" rows="3" readonly>{{description}}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>1박 가격:</label>
+                <input type="text" class="form-control" value="{{price}}" readonly>
+            </div>
+        {{/rooms}}
+        <div class="form-group">
+            <label>숙박일 수</label>
+            <input type="text" id="stayDuration" class="form-control" value="" readonly>
+        </div>
+        <div class="form-group">
+            <label>총 가격:</label>
+            <input type="text" id="totalPrice" class="form-control" value="" readonly>
+        </div>
+
+        <button type="submit" class="btn btn-primary">예약하기</button>
+    </form>
+</div>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var roomId = $('input[name="roomId"]').val();
+        var checkInDate = $('input[name="checkInDate"]').val();
+        var fastestBookedDate = $('#fastestBookedDate').val();
+        var initialPrice = $('input[value="{{rooms.price}}"]').val();
+    var maxPeople = $('#maxPerson').val();
+
+    // 최대 인원 표시 업데이트
+    $('#maxPersonDisplay').text(maxPeople);
+    $('#guestCount').attr('max', maxPeople);
+
+    // 초기 총 가격 설정
+    $('#totalPrice').val(initialPrice);
+
+    // 체크인 날짜 이후로 체크아웃 날짜 설정
+    var checkInDateObj = new Date(checkInDate);
+    var minCheckOutDate = new Date(checkInDateObj);
+    minCheckOutDate.setDate(minCheckOutDate.getDate() + 1);
+
+    var maxCheckOutDate = fastestBookedDate ? new Date(fastestBookedDate) : null;
+
+    // 체크아웃 날짜 제한 설정
+    $('#checkOutDate').attr('min', minCheckOutDate.toISOString().split('T')[0]);
+    if (maxCheckOutDate) {
+        $('#checkOutDate').attr('max', maxCheckOutDate.toISOString().split('T')[0]);
+    }
+
+    $('#checkOutDate').change(function() {
+        var checkOutDate = $(this).val();
+        var checkOutDateObj = new Date(checkOutDate);
+
+        if (checkOutDateObj <= checkInDateObj) {
+            alert('체크아웃 날짜는 체크인 날짜 이후여야 합니다.');
+            $(this).val('');
+            return;
+        }
+
+        if (maxCheckOutDate && checkOutDateObj > maxCheckOutDate) {
+            alert('선택한 날짜 이후에 이미 예약이 있습니다. 다른 날짜를 선택해주세요.');
+            $(this).val('');
+            return;
+        }
+
+        var priceData = {
+            roomId: parseInt(roomId),
+            checkInDate: checkInDate,
+            checkOutDate: checkOutDate
+        };
+
+        $.ajax({
+            url: '/reservation/calculate-price',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(priceData),
+            success: function(response) {
+                $('#totalPrice').val(response.priceDto.totalPrice);
+                $('#stayDuration').val(response.priceDto.stayDuration);
+            },
+            error: function() {
+                alert('가격 계산 중 오류가 발생했습니다.');
+            }
+        });
+    });
+
+    // 인원 수 제한
+    $('#guestCount').on('input', function() {
+        var value = $(this).val();
+        if (value > maxPeople) {
+            alert('최대 ' + maxPeople + '명까지만 예약 가능합니다.');
+            $(this).val(maxPeople);
+        } else if (value < 1) {
+            $(this).val(1);
+        }
+    });
+});
+</script>
+{{>layout/footer}}

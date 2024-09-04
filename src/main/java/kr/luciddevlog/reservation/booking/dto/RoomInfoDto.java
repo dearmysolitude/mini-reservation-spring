@@ -14,6 +14,7 @@ public class RoomInfoDto {
     private Integer price;
     private String description;
     private String name;
+    private Integer maxPeople;
 
     public static RoomInfoDto of(RoomItem roomItem) {
         return RoomInfoDto.builder()
@@ -21,6 +22,7 @@ public class RoomInfoDto {
                 .price(roomItem.getPrice())
                 .description(roomItem.getDescription())
                 .name(roomItem.getName())
+                .maxPeople(roomItem.getMaxPeople())
                 .build();
     }
 }

@@ -31,19 +31,25 @@
 <div class="container mt-5">
     <h1 class="mb-4">호텔 예약 현황 (30일)</h1>
     <div class="calendar">
-        {{#days}}
+        {{#monthlySchedule}}
             <div class="day">
                 <div class="date">{{date}}</div>
                 <div class="room-status">
-                    <div class="room room1 {{#room1.available}}available{{/room1.available}}{{^room1.available}}booked{{/room1.available}}">
-                        Room 1
-                    </div>
-                    <div class="room room2 {{#room2.available}}available{{/room2.available}}{{^room2.available}}booked{{/room2.available}}">
-                        Room 2
-                    </div>
+                    {{#rooms}}
+                        <div class="room {{#available}}available{{/available}}{{^available}}booked{{/available}}">
+                            {{#available}}
+                                <a href="/reservation/book-room?date={{date}}&roomId={{roomInfoDto.roomId}}" class="room-link">
+                                    {{roomInfoDto.name}}
+                                </a>
+                            {{/available}}
+                            {{^available}}
+                                {{roomInfoDto.name}}
+                            {{/available}}
+                        </div>
+                    {{/rooms}}
                 </div>
             </div>
-        {{/days}}
+        {{/monthlySchedule}}
     </div>
 </div>
 {{>layout/footer}}

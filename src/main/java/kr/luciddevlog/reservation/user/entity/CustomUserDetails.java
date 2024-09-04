@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class CustomUserDetails implements UserDetails {
+    // Refactor 필요: UserItem 대신 최소한의 데이터만 가지는 DTO로 대체해야: 비밀번호, Username, Role
     private final UserItem userItem;
 
     public CustomUserDetails(UserItem userItem) {

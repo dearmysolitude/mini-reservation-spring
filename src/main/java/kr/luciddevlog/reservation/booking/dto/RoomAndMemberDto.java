@@ -4,15 +4,14 @@ import kr.luciddevlog.reservation.user.dto.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
-public class RoomsAndMemberDto {
-    private List<RoomInfoDto> rooms;
+public class RoomAndMemberDto {
+    private final RoomInfoDto room;
     @Setter
     private UserDto user;
 
-    public RoomsAndMemberDto(List<RoomInfoDto> rooms) {
-        this.rooms = rooms;
+    public RoomAndMemberDto(UserDto user, RoomInfoDto room) {
+        this.user = user;
+        this.room = room;
     }
 }

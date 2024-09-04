@@ -53,8 +53,7 @@ public class NavbarAndUserInfoInterceptor implements HandlerInterceptor {
                         new SubItem("후기", "/reservation/board/review/list")
                 )),
                 new NavItem("예약하기", List.of(
-                        new SubItem("예약 현황", "/reservation/month"),
-                        new SubItem("예약하기", "/reservation/form")
+                        new SubItem("예약 현황", "/reservation/month")
                 ))
         );
     }

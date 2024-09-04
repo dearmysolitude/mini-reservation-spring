@@ -24,7 +24,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> {
                     authorizeRequests.requestMatchers("/h2-console/**").permitAll(); // H2 콘솔 접근 허용
                     // /board로 시작하는 나머지 모든 경로는 인증된 사용자만 접근 가능
-                    authorizeRequests.requestMatchers("/board/review/update", "board/review/delete", "board/review/insert").authenticated();
+                    authorizeRequests.requestMatchers("/board/review/update", "board/review/delete", "board/review/insert", "/book-room").authenticated();
                     // 모든 사용자에게 허용할 특정 게시판 경로
                     authorizeRequests.requestMatchers("/board/review/list", "/board/notice/list", "/board/{id}", "/board/{id}").permitAll();
                     authorizeRequests.requestMatchers("/board/notice/insert", "/board/notice/update", "board/notice/delete").hasRole("ADMIN");

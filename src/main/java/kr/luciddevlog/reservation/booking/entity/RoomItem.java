@@ -22,4 +22,7 @@ public class RoomItem {
 
     @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private int maxPeople;
 }

@@ -28,6 +28,7 @@ public class CommentServiceImpl implements CommentService{
         this.memberRepository = memberRepository;
     }
 
+    // 대댓글에 대한 Indent를 전달할 dto필요 혹은 프론트에서 reLevel에 따라 들여써야 함
     public List<CommentItemWithAuthorName> showContent(Long rootId, Long userId) {
         List<CommentItemWithAuthorName> comments = commentRepository.findCommentItemsByRootId(rootId);
 
