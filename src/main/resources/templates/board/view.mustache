@@ -123,10 +123,10 @@
                                 </div>
                                 <div class="comment-actions">
                                     <button type="button" class="btn btn-primary btn-sm" onclick="showPopup('reply', {{id}})">답글</button>
-                                    {{#isMine}}
+                                    {{#mine}}
                                         <button type="button" class="btn btn-secondary btn-sm" onclick="showPopup('edit', {{id}})">수정</button>
                                         <button type="button" class="btn btn-danger btn-sm" onclick="deleteComment({{id}})">삭제</button>
-                                    {{/isMine}}
+                                    {{/mine}}
                                 </div>
                             </div>
                         {{/commentItems}}

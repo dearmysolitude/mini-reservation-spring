@@ -1,6 +1,8 @@
 package kr.luciddevlog.reservation.board.service;
 
+import kr.luciddevlog.reservation.board.dto.CommentDto;
 import kr.luciddevlog.reservation.board.dto.CommentForm;
+import kr.luciddevlog.reservation.board.dto.CommentItemWithAuthorName;
 import kr.luciddevlog.reservation.board.entity.BoardCategory;
 import kr.luciddevlog.reservation.board.entity.BoardItem;
 import kr.luciddevlog.reservation.board.repository.CommentRepository;
@@ -10,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,8 +28,16 @@ public class CommentServiceImpl implements CommentService{
         this.memberRepository = memberRepository;
     }
 
-    public List<BoardItem> showContent(Long rootId) {
-        return commentRepository.findAllByRootIdOrderByReCntAsc(rootId);
+    public List<CommentItemWithAuthorName> showContent(Long rootId, Long userId) {
+        List<CommentItemWithAuthorName> comments = commentRepository.findCommentItemsByRootId(rootId);
+
+        if (userId == null) {
+            return comments;
+        }
+
+        return comments.stream()
+                .map(commentItemWithAuthorName -> new CommentDto(commentItemWithAuthorName, userId))
+                .collect(Collectors.toList());
     }
 
     // 댓글의 순서를 부여하는 것이 주요 로직
@@ -48,7 +60,7 @@ public class CommentServiceImpl implements CommentService{
                     .category(BoardCategory.REVIEW)
                     .content(content)
                     .writer(member)
-                    .reLevel(0)
+                    .reLevel(1)
                     .reCnt(commentRepository.countByRootId(rootId) + 1)
                     .build();
 

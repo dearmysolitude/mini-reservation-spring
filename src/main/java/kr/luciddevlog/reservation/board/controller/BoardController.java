@@ -2,10 +2,7 @@ package kr.luciddevlog.reservation.board.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import kr.luciddevlog.reservation.board.dto.BoardForm;
-import kr.luciddevlog.reservation.board.dto.BoardItemWithAuthorName;
-import kr.luciddevlog.reservation.board.dto.CommentForm;
-import kr.luciddevlog.reservation.board.dto.Pagination;
+import kr.luciddevlog.reservation.board.dto.*;
 import kr.luciddevlog.reservation.board.entity.BoardCategory;
 import kr.luciddevlog.reservation.board.entity.BoardItem;
 import kr.luciddevlog.reservation.board.exception.BoardRequestFailException;
@@ -100,8 +97,8 @@ public class BoardController {
         model.addAttribute("boardItem", b);
         boardService.updateViewCount(id);
 
-        if(!(b.getCategory() == (BoardCategory.NOTICE))) {
-            List<BoardItem> comments = commentService.showContent(id);
+        if(b.getCategory() != (BoardCategory.NOTICE)) {
+            List<CommentItemWithAuthorName> comments = commentService.showContent(id, userId);
             model.addAttribute("commentItems", comments);
         }
         // 세션에서 목록 페이지 URL 가져오기
