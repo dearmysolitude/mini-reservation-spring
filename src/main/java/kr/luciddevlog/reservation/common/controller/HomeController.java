@@ -26,9 +26,15 @@ public class HomeController {
     }
 
     @RequestMapping("/deluxe")
-    public String regularRoom() {
+    public String deluxRoom() {
         return "/a_02";
     }
+
+    @RequestMapping("/oceanview")
+    public String regularRoom() {
+        return "/a_03";
+    }
+
 
     @RequestMapping("/location")
     public String location() {
@@ -44,5 +50,6 @@ public class HomeController {
     public String nearSpot2() {
         return "/c_02";
     }
+
 
 }

@@ -22,6 +22,7 @@ public class CommentItemWithAuthorName {
     private Long writerId;
     private String writerName;
     private BoardCategory category;
+    private String indents;
 
     @Builder
     public CommentItemWithAuthorName(Long id, String content, LocalDateTime createdAt, LocalDateTime updatedAt,
@@ -37,6 +38,7 @@ public class CommentItemWithAuthorName {
         this.writerId = writerId;
         this.writerName = writerName;
         this.category = category;
+        setIndents();
     }
 
     public CommentItemWithAuthorName(Long id, String content, LocalDate createdAt, LocalDate updatedAt,
@@ -52,5 +54,10 @@ public class CommentItemWithAuthorName {
         this.writerId = writerId;
         this.writerName = writerName;
         this.category = category;
+        setIndents();
+    }
+
+    public void setIndents() {
+        this.indents = ">".repeat(Math.max(0, this.reLevel - 1));
     }
 }
