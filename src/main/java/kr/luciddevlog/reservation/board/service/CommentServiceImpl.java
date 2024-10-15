@@ -98,13 +98,7 @@ public class CommentServiceImpl implements CommentService{
         Integer index = commentRepository.findMinReCnt(rootId, myReLevel, myReCnt);
 
         if(index == null || index == -1 || index == 0) {
-            Integer temp = commentRepository.findMaxReCnt(rootId, myReLevel + 1, myReCnt);
-
-            if(temp == null || temp == -1 || temp == 0) {
-                index = myReCnt + 1;
-            } else {
-                index = temp + 1;
-            }
+            index = commentRepository.countByRootId(rootId) + 1;
         }
         return index;
     }
