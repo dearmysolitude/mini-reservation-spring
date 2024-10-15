@@ -149,7 +149,8 @@
         $('#checkOutDate').attr('max', maxCheckOutDate.toISOString().split('T')[0]);
     }
 
-    $('#checkOutDate').change(function() {
+    $('#checkOutDate').change(
+    function() {
         var checkOutDate = $(this).val();
         var checkOutDateObj = new Date(checkOutDate);
 
