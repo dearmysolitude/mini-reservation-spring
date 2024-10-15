@@ -97,10 +97,19 @@ public class CommentServiceImpl implements CommentService{
     private Integer decideIndex(Long rootId, int myReLevel, int myReCnt) {
         Integer index = commentRepository.findMinReCnt(rootId, myReLevel, myReCnt);
 
-        if(index == null || index == -1 || index == 0) {
-            index = commentRepository.countByRootId(rootId) + 1;
+        if(indexNotFound(index)) {
+            Integer temp = commentRepository.findMaxReCnt(rootId, myReLevel+1, myReCnt);
+            if(indexNotFound(temp)) {
+                index = commentRepository.countByRootId(rootId) + 1;
+            } else {
+                index = temp + 1;
+            }
         }
         return index;
+    }
+
+    private boolean indexNotFound(Integer number) {
+        return number == null;
     }
 
     @Transactional
