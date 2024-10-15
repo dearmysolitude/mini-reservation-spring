@@ -25,6 +25,9 @@ public interface CommentRepository extends JpaRepository<BoardItem, Long>, Comme
     @Query("SELECT MIN(c.reCnt) FROM BoardItem c WHERE c.rootId = :boardId AND c.reLevel = :reLevel AND c.reCnt > :reCnt")
     Integer findMinReCnt(@Param("boardId") Long boardId, @Param("reLevel") int reLevel, @Param("reCnt") int reCnt);
 
+    @Query("SELECT MAX(c.reCnt) FROM BoardItem c WHERE c.rootId = :boardId AND c.reLevel = :reLevel AND c.reCnt > :reCnt")
+    Integer findMaxReCnt(@Param("boardId") Long boardId, @Param("reLevel") int reLevel, @Param("reCnt") int reCnt);
+
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query("UPDATE BoardItem c SET c.reCnt = c.reCnt - 1 WHERE c.rootId = :boardId AND c.reCnt >= :reCnt")

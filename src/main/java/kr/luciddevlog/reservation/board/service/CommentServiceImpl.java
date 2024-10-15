@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,7 +70,6 @@ public class CommentServiceImpl implements CommentService{
         createSubComment(parentId, content, member);
     }
 
-    @Transactional
     private void createSubComment(Long parentId, String content, UserItem member) { // 들어오는 id는 답글 달 댓글의 id
         BoardItem parentComment = commentRepository.findById(parentId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 댓글입니다")
@@ -80,12 +78,7 @@ public class CommentServiceImpl implements CommentService{
         int myReCnt = parentComment.getReCnt();
         int myReLevel = parentComment.getReLevel();
         Long rootId = parentComment.getRootId();
-
-        Integer index = commentRepository.findMinReCnt(rootId, myReLevel, myReCnt);
-
-        if(index==null || index == -1 || index == 0) {
-            index = commentRepository.countByRootId(rootId) + 1;
-        }
+        int index = decideIndex(rootId, myReLevel, myReCnt);
 
         commentRepository.updateReCntForComment(rootId, index);
 
@@ -99,6 +92,21 @@ public class CommentServiceImpl implements CommentService{
                 .build();
 
         commentRepository.save(newComment);
+    }
+
+    private Integer decideIndex(Long rootId, int myReLevel, int myReCnt) {
+        Integer index = commentRepository.findMinReCnt(rootId, myReLevel, myReCnt);
+
+        if(index == null || index == -1 || index == 0) {
+            Integer temp = commentRepository.findMaxReCnt(rootId, myReLevel + 1, myReCnt);
+
+            if(temp == null || temp == -1 || temp == 0) {
+                index = myReCnt + 1;
+            } else {
+                index = temp + 1;
+            }
+        }
+        return index;
     }
 
     @Transactional

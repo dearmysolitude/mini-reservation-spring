@@ -54,7 +54,7 @@ public class UserController {
             return "member/login";
         } catch (UserAlreadyExistsException e) {
             messages.add(e.getMessage());
-            model.addAttribute("messages", messages);
+            model.addAttribute("error", messages);
             return "member/signup";
         }
     }
